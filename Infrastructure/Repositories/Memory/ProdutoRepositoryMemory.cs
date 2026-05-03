@@ -20,11 +20,21 @@ namespace Infrastructure.Repositories.Memory
         {
             return _produtos.FirstOrDefault(p => p.Ref == Ref);
         }
-        public Produto BuscarPorNome(string nome)
+        
+        public IEnumerable<Produto> Buscar(string nome, string Ref)
         {
-            return _produtos.FirstOrDefault(p => p.Nome == nome);
+            var query = _produtos.AsEnumerable();
+
+            if(!string.IsNullOrWhiteSpace(nome))
+                query = query.Where(p => p.Nome.Contains(nome,StringComparison.OrdinalIgnoreCase));
+
+            if (!string.IsNullOrWhiteSpace(Ref))
+            {
+                query = query.Where(p => p.Ref.Contains(Ref, StringComparison.OrdinalIgnoreCase));
+            }
+            return query;
         }
-        public List<Produto> ListarTodos()
+        public List<Produto> ListarProdutos()
         {
             return _produtos;
         }

@@ -1,6 +1,6 @@
 ﻿namespace Application.DTOs
 {
-    public class ProdutoDto
+    public class ProdutoCreateDto
     {
         public string Ref { get; set; }
         public string Nome { get; set; }

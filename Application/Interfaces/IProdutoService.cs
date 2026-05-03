@@ -1,15 +1,16 @@
 ﻿using Application.DTOs;
 
+
 namespace Application.Interfaces
 {
     public interface IProdutoService
     {
-        void CriarProduto(ProdutoDto dto);
-        ProdutoDto BuscarPorId(int id);
-        ProdutoDto BuscarPorRef(string Ref);
-        ProdutoDto BuscarPorNome(string nome);
-        List<ProdutoDto> ListarTodos();
-        void AtualizarProduto(ProdutoDto dto);
-        void DeletarProduto(ProdutoDto dto);
+        void CriarProduto(ProdutoCreateDto dto);
+        ProdutoResponseDto BuscarPorId(int id);
+        ProdutoResponseDto BuscarPorRef(string Ref);
+        IEnumerable<ProdutoResponseDto> Buscar(string? nome, string? Ref);
+        List<ProdutoResponseDto> ListarTodos();
+        void AtualizarProduto(int id,ProdutoCreateDto dto);
+        void DeletarProduto(int id);
     }
 }
