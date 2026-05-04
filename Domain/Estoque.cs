@@ -2,7 +2,7 @@
 {
     public class Estoque
     {
-        public int Produto_Id {  get; set; }
+        public int ProdutoId {  get; set; }
         public int Quantidade { get; set; }
 
     }
