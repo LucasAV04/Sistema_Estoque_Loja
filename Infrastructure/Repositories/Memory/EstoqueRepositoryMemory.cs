@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories.Memory
 
         public Estoque ObterPorProdutoId(int produtoId)
         {
-            return _estoques.FirstOrDefault(e => e.Produto_Id == produtoId);
+            return _estoques.FirstOrDefault(e => e.ProdutoId == produtoId);
         }
 
         public void Inserir(Estoque estoque)
@@ -19,7 +19,7 @@ namespace Infrastructure.Repositories.Memory
 
         public void Atualizar(Estoque estoque)
         {
-            var existente = ObterPorProdutoId(estoque.Produto_Id);
+            var existente = ObterPorProdutoId(estoque.ProdutoId);
 
             if (existente != null)
             {
