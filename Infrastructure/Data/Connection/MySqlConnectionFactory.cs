@@ -1,4 +1,4 @@
-﻿using MySqlConnector;
+using MySqlConnector;
 using Microsoft.Extensions.Configuration;
 namespace Infrastructure.Data.Connection
 {

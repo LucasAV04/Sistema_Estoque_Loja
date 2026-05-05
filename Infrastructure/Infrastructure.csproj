@@ -1,11 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <Compile Remove="Repositories\MySql\**" />
+    <EmbeddedResource Remove="Repositories\MySql\**" />
+    <None Remove="Repositories\MySql\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\MySql\" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
