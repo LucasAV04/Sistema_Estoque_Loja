@@ -5,7 +5,7 @@ using Infrastructure.Repositories.Interfaces;
 
 namespace Application.Services
 {
-    public class EstoqueService:IEstoqueService
+    public class EstoqueService : IEstoqueService
     {
         private readonly IEstoqueRepository _repo;
 
@@ -16,15 +16,15 @@ namespace Application.Services
 
         public void Entrada(EntradaEstoqueDto dto)
         {
-           if(dto.Quantidade <= 0)
-               throw new ArgumentOutOfRangeException("Quantidade Insuficiente");
+            if (dto.Quantidade <= 0)
+                throw new ArgumentOutOfRangeException(nameof(dto.Quantidade), "Quantidade deve ser maior que zero.");
 
-           var estoque = _repo.ObterPorProdutoId(dto.ProdutoId);
-            if(estoque == null)
+            var estoque = _repo.ObterPorProdutoId(dto.ProdutoId);
+            if (estoque == null)
             {
                 estoque = new Estoque
                 {
-                    Produto_Id = dto.ProdutoId,
+                    ProdutoId = dto.ProdutoId,
                     Quantidade = dto.Quantidade,
                 };
                 _repo.Inserir(estoque);
@@ -35,14 +35,15 @@ namespace Application.Services
                 _repo.Atualizar(estoque);
             }
         }
+
         public void Saida(SaidaEstoqueDto dto)
         {
             if (dto.Quantidade <= 0)
-                throw new ArgumentOutOfRangeException("Quantidade Insuficiente");
+                throw new ArgumentOutOfRangeException(nameof(dto.Quantidade), "Quantidade deve ser maior que zero.");
 
             var estoque = _repo.ObterPorProdutoId(dto.ProdutoId);
-            if(estoque == null || estoque.Quantidade < dto.Quantidade)
-                throw new Exception("Estoque Insuficiente");
+            if (estoque == null || estoque.Quantidade < dto.Quantidade)
+                throw new InvalidOperationException("Estoque insuficiente.");
 
             estoque.Quantidade -= dto.Quantidade;
             _repo.Atualizar(estoque);
@@ -51,7 +52,7 @@ namespace Application.Services
         public EstoqueResponseDto ObterPorProduto(int produtoId)
         {
             var estoque = _repo.ObterPorProdutoId(produtoId);
-            if(estoque == null)
+            if (estoque == null)
             {
                 return new EstoqueResponseDto
                 {
@@ -62,7 +63,7 @@ namespace Application.Services
 
             return new EstoqueResponseDto
             {
-                ProdutoId = estoque.Produto_Id,
+                ProdutoId = estoque.ProdutoId,
                 Quantidade = estoque.Quantidade
             };
         }

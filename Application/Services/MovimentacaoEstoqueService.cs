@@ -6,15 +6,18 @@ using Infrastructure.Repositories.Interfaces;
 
 namespace Application.Services
 {
-    public class MovimentacaoEstoqueService:IMovimentacaoEstoqueService
+    public class MovimentacaoEstoqueService : IMovimentacaoEstoqueService
     {
         private readonly IMovimentacaoEstoqueRepository _movimentacaoRepository;
         private readonly IEstoqueRepository _estoqueRepository;
         private readonly IProdutoRepository _produtoRepository;
         private readonly IMapper _mapper;
 
-        public MovimentacaoEstoqueService(IMovimentacaoEstoqueRepository movimentacaoRepository,IEstoqueRepository estoqueRepository,
-            IProdutoRepository produtoRepository,IMapper mapper)
+        public MovimentacaoEstoqueService(
+            IMovimentacaoEstoqueRepository movimentacaoRepository,
+            IEstoqueRepository estoqueRepository,
+            IProdutoRepository produtoRepository,
+            IMapper mapper)
         {
             _movimentacaoRepository = movimentacaoRepository;
             _estoqueRepository = estoqueRepository;
@@ -27,24 +30,23 @@ namespace Application.Services
             if (dto.Quantidade <= 0)
                 throw new ArgumentException("Quantidade deve ser maior que zero.");
 
-            if (dto.Tipo != "ENTRADA" && dto.Tipo != "SAIDA")
-                throw new ArgumentException("Tipo de movimentação inválido.");
+            if (!Enum.TryParse<MovimentacaoEstoque.TipoMovimentacao>(dto.Tipo?.ToUpper(), out _))
+                throw new ArgumentException("Tipo de movimentação inválido. Use ENTRADA ou SAIDA.");
 
             var produto = _produtoRepository.BuscarPorId(dto.ProdutoId);
-
             if (produto == null)
                 throw new ArgumentException("Produto não encontrado.");
 
             var estoque = _estoqueRepository.ObterPorProdutoId(dto.ProdutoId);
 
-            if (dto.Tipo == "SAIDA")
+            if (dto.Tipo!.ToUpper() == "SAIDA")
             {
                 if (estoque == null || estoque.Quantidade < dto.Quantidade)
                     throw new InvalidOperationException("Estoque insuficiente.");
             }
 
             var movimentacao = _mapper.Map<MovimentacaoEstoque>(dto);
-
+            movimentacao.Created_At = DateTime.UtcNow;
             _movimentacaoRepository.Inserir(movimentacao);
 
             if (estoque == null)
@@ -52,17 +54,15 @@ namespace Application.Services
                 estoque = new Estoque
                 {
                     ProdutoId = dto.ProdutoId,
-                    Quantidade = dto.Tipo == "ENTRADA" ? dto.Quantidade : 0
+                    Quantidade = dto.Tipo.ToUpper() == "ENTRADA" ? dto.Quantidade : 0
                 };
-
                 _estoqueRepository.Inserir(estoque);
                 return;
             }
 
-            if (dto.Tipo == "ENTRADA")
+            if (dto.Tipo.ToUpper() == "ENTRADA")
                 estoque.Quantidade += dto.Quantidade;
-
-            if (dto.Tipo == "SAIDA")
+            else
                 estoque.Quantidade -= dto.Quantidade;
 
             _estoqueRepository.Atualizar(estoque);
@@ -71,7 +71,6 @@ namespace Application.Services
         public MovimentacaoEstoqueResponseDto BuscarPorId(int id)
         {
             var movimentacao = _movimentacaoRepository.BuscarPorId(id);
-
             if (movimentacao == null)
                 throw new ArgumentException("Movimentação não encontrada.");
 
@@ -81,14 +80,12 @@ namespace Application.Services
         public IEnumerable<MovimentacaoEstoqueResponseDto> ListarPorProduto(int produtoId)
         {
             var movimentacoes = _movimentacaoRepository.ListarPorProduto(produtoId);
-
             return _mapper.Map<IEnumerable<MovimentacaoEstoqueResponseDto>>(movimentacoes);
         }
 
         public IEnumerable<MovimentacaoEstoqueResponseDto> ListarTodos()
         {
             var movimentacoes = _movimentacaoRepository.ListarTodos();
-
             return _mapper.Map<IEnumerable<MovimentacaoEstoqueResponseDto>>(movimentacoes);
         }
     }

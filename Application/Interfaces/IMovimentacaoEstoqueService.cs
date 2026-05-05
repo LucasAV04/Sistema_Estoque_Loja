@@ -2,7 +2,7 @@
 
 namespace Application.Interfaces
 {
-    public class IMovimentacaoEstoqueService
+    public interface IMovimentacaoEstoqueService
     {
         void Registrar(MovimentacaoEstoqueDto dto);
         MovimentacaoEstoqueResponseDto BuscarPorId(int id);

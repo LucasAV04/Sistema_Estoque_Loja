@@ -5,7 +5,7 @@ using Infrastructure.Repositories.Interfaces;
 
 namespace Infrastructure.Repositories.MSql
 {
-    public class ProdutoMySqlRepository:IProdutoRepository
+    public class ProdutoMySqlRepository : IProdutoRepository
     {
         private readonly MySqlConnectionFactory _connectionFactory;
 
@@ -14,39 +14,41 @@ namespace Infrastructure.Repositories.MSql
             _connectionFactory = connectionFactory;
         }
 
-        public Produto BuscarPorId(int id)
+        public Produto? BuscarPorId(int id)
         {
             using var connection = _connectionFactory.Create();
 
             var sql = @"
-                SELECT 
-                    id AS Id,
-                    ref AS Ref,
-                    nome AS Nome,
-                    descricao AS Descricao,
-                    tipo AS Tipo,
-                    valor_compra AS ValorCompra,
-                    valor_venda AS ValorVenda
+                SELECT
+                    id          AS Id,
+                    ref         AS Ref,
+                    nome        AS Nome,
+                    descricao   AS Descricao,
+                    tipo        AS Tipo,
+                    estado      AS Estado,
+                    valor_compra AS Valor_Compra,
+                    valor_venda  AS Valor_Venda
                 FROM produto
                 WHERE id = @id;
             ";
 
             return connection.QueryFirstOrDefault<Produto>(sql, new { id });
         }
-        public Produto BuscarPorRef(string refProduto)
+
+        public Produto? BuscarPorRef(string refProduto)
         {
             using var connection = _connectionFactory.Create();
 
             var sql = @"
-                SELECT 
-                    id AS Id,
-                    ref AS Ref,
-                    nome AS Nome,
-                    descricao AS Descricao,
-                    tipo AS Tipo,
-                    estado AS Estado,
+                SELECT
+                    id          AS Id,
+                    ref         AS Ref,
+                    nome        AS Nome,
+                    descricao   AS Descricao,
+                    tipo        AS Tipo,
+                    estado      AS Estado,
                     valor_compra AS Valor_Compra,
-                    valor_venda AS Valor_Venda
+                    valor_venda  AS Valor_Venda
                 FROM produto
                 WHERE ref = @refProduto;
             ";
@@ -59,15 +61,15 @@ namespace Infrastructure.Repositories.MSql
             using var connection = _connectionFactory.Create();
 
             var sql = @"
-                SELECT 
-                    id AS Id,
-                    ref AS Ref,
-                    nome AS Nome,
-                    descricao AS Descricao,
-                    tipo AS Tipo,
-                    estado AS Estado,
+                SELECT
+                    id          AS Id,
+                    ref         AS Ref,
+                    nome        AS Nome,
+                    descricao   AS Descricao,
+                    tipo        AS Tipo,
+                    estado      AS Estado,
                     valor_compra AS Valor_Compra,
-                    valor_venda AS Valor_Venda
+                    valor_venda  AS Valor_Venda
                 FROM produto
                 WHERE
                     (@nome IS NULL OR nome LIKE CONCAT('%', @nome, '%'))
@@ -84,15 +86,15 @@ namespace Infrastructure.Repositories.MSql
             using var connection = _connectionFactory.Create();
 
             var sql = @"
-                SELECT 
-                    id AS Id,
-                    ref AS Ref,
-                    nome AS Nome,
-                    descricao AS Descricao,
-                    tipo AS Tipo,
-                    estado AS Estado,
+                SELECT
+                    id          AS Id,
+                    ref         AS Ref,
+                    nome        AS Nome,
+                    descricao   AS Descricao,
+                    tipo        AS Tipo,
+                    estado      AS Estado,
                     valor_compra AS Valor_Compra,
-                    valor_venda AS Valor_Venda
+                    valor_venda  AS Valor_Venda
                 FROM produto
                 ORDER BY nome;
             ";
@@ -109,9 +111,11 @@ namespace Infrastructure.Repositories.MSql
                     (ref, nome, descricao, tipo, estado, valor_compra, valor_venda)
                 VALUES
                     (@Ref, @Nome, @Descricao, @Tipo, @Estado, @Valor_Compra, @Valor_Venda);
+
+                SELECT LAST_INSERT_ID();
             ";
 
-            connection.Execute(sql, produto);
+            produto.Id = connection.ExecuteScalar<int>(sql, produto);
         }
 
         public void AtualizarProduto(Produto produto)
@@ -121,30 +125,26 @@ namespace Infrastructure.Repositories.MSql
             var sql = @"
                 UPDATE produto
                 SET
-                    ref = @Ref,
-                    nome = @Nome,
-                    descricao = @Descricao,
-                    tipo = @Tipo,
-                    estado = @Estado,
+                    ref          = @Ref,
+                    nome         = @Nome,
+                    descricao    = @Descricao,
+                    tipo         = @Tipo,
+                    estado       = @Estado,
                     valor_compra = @Valor_Compra,
-                    valor_venda = @Valor_Venda
+                    valor_venda  = @Valor_Venda
                 WHERE id = @Id;
             ";
 
             connection.Execute(sql, produto);
         }
 
-        public void DeletarProduto(int id)
+        public void DeletarProduto(Produto produto)
         {
             using var connection = _connectionFactory.Create();
 
-            var sql = @"
-                DELETE FROM produto
-                WHERE id = @id;
-            ";
+            var sql = "DELETE FROM produto WHERE id = @Id;";
 
-            connection.Execute(sql, new { id });
+            connection.Execute(sql, new { produto.Id });
         }
     }
-
 }
