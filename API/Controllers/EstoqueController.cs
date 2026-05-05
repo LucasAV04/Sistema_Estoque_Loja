@@ -15,9 +15,6 @@ namespace API.Controllers
             _estoqueService = estoqueService;
         }
 
-        /// <summary>
-        /// Consulta o estoque atual de um produto
-        /// </summary>
         [HttpGet("{produtoId:int}")]
         public IActionResult ObterPorProduto(int produtoId)
         {
@@ -25,9 +22,7 @@ namespace API.Controllers
             return Ok(estoque);
         }
 
-        /// <summary>
-        /// Registra entrada de itens no estoque
-        /// </summary>
+     
         [HttpPost("entrada")]
         public IActionResult Entrada([FromBody] EntradaEstoqueDto dto)
         {
@@ -42,9 +37,7 @@ namespace API.Controllers
             }
         }
 
-        /// <summary>
-        /// Registra saída de itens do estoque
-        /// </summary>
+      
         [HttpPost("saida")]
         public IActionResult Saida([FromBody] SaidaEstoqueDto dto)
         {

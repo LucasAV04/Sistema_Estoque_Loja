@@ -3,7 +3,7 @@ using Domain;
 using Infrastructure.Data.Connection;
 using Infrastructure.Repositories.Interfaces;
 
-namespace Infrastructure.Repositories.MSql
+namespace Infrastructure.Repositories.MySql
 {
     public class EstoqueMySqlRepository : IEstoqueRepository
     {

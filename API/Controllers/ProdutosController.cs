@@ -15,9 +15,7 @@ namespace API.Controllers
             _produtoService = produtoService;
         }
 
-        /// <summary>
-        /// Lista todos os produtos ou filtra por nome/ref
-        /// </summary>
+       
         [HttpGet]
         public IActionResult Buscar([FromQuery] string? nome, [FromQuery] string? Ref)
         {
@@ -31,9 +29,7 @@ namespace API.Controllers
             return Ok(produtos);
         }
 
-        /// <summary>
-        /// Busca produto por Id
-        /// </summary>
+        
         [HttpGet("{id:int}")]
         public IActionResult BuscarPorId(int id)
         {
@@ -48,9 +44,7 @@ namespace API.Controllers
             }
         }
 
-        /// <summary>
-        /// Busca produto por Ref
-        /// </summary>
+        
         [HttpGet("ref/{ref}")]
         public IActionResult BuscarPorRef(string @ref)
         {
@@ -65,9 +59,7 @@ namespace API.Controllers
             }
         }
 
-        /// <summary>
-        /// Cria um novo produto
-        /// </summary>
+       
         [HttpPost]
         public IActionResult Criar([FromBody] ProdutoCreateDto dto)
         {
@@ -86,9 +78,7 @@ namespace API.Controllers
             }
         }
 
-        /// <summary>
-        /// Atualiza um produto existente
-        /// </summary>
+       
         [HttpPut("{id:int}")]
         public IActionResult Atualizar(int id, [FromBody] ProdutoCreateDto dto)
         {
@@ -103,9 +93,6 @@ namespace API.Controllers
             }
         }
 
-        /// <summary>
-        /// Remove um produto
-        /// </summary>
         [HttpDelete("{id:int}")]
         public IActionResult Deletar(int id)
         {

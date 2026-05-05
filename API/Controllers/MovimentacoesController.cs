@@ -15,9 +15,6 @@ namespace API.Controllers
             _movimentacaoService = movimentacaoService;
         }
 
-        /// <summary>
-        /// Lista todas as movimentações
-        /// </summary>
         [HttpGet]
         public IActionResult ListarTodos()
         {
@@ -25,9 +22,7 @@ namespace API.Controllers
             return Ok(movimentacoes);
         }
 
-        /// <summary>
-        /// Lista movimentações de um produto específico
-        /// </summary>
+       
         [HttpGet("produto/{produtoId:int}")]
         public IActionResult ListarPorProduto(int produtoId)
         {
@@ -35,9 +30,6 @@ namespace API.Controllers
             return Ok(movimentacoes);
         }
 
-        /// <summary>
-        /// Busca uma movimentação por Id
-        /// </summary>
         [HttpGet("{id:int}")]
         public IActionResult BuscarPorId(int id)
         {
@@ -52,9 +44,7 @@ namespace API.Controllers
             }
         }
 
-        /// <summary>
-        /// Registra uma nova movimentação (ENTRADA ou SAIDA)
-        /// </summary>
+      
         [HttpPost]
         public IActionResult Registrar([FromBody] MovimentacaoEstoqueDto dto)
         {
