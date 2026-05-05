@@ -16,7 +16,7 @@ namespace API.Controllers
         }
 
        
-        [HttpGet]
+        [HttpGet("Buscar")]
         public IActionResult Buscar([FromQuery] string? nome, [FromQuery] string? Ref)
         {
             if (nome != null || Ref != null)
@@ -24,13 +24,13 @@ namespace API.Controllers
                 var resultado = _produtoService.Buscar(nome, Ref);
                 return Ok(resultado);
             }
-
-            var produtos = _produtoService.ListarTodos();
-            return Ok(produtos);
+            return Ok(_produtoService.ListarTodos());
         }
 
-        
-        [HttpGet("{id:int}")]
+       
+
+
+        [HttpGet("{id:int}/BuscarPorId")]
         public IActionResult BuscarPorId(int id)
         {
             try
@@ -45,7 +45,7 @@ namespace API.Controllers
         }
 
         
-        [HttpGet("ref/{ref}")]
+        [HttpGet("ref/{ref}/BuscarPorRef")]
         public IActionResult BuscarPorRef(string @ref)
         {
             try
@@ -60,7 +60,7 @@ namespace API.Controllers
         }
 
        
-        [HttpPost]
+        [HttpPost("Adicionar")]
         public IActionResult Criar([FromBody] ProdutoCreateDto dto)
         {
             try
@@ -79,7 +79,7 @@ namespace API.Controllers
         }
 
        
-        [HttpPut("{id:int}")]
+        [HttpPut("{id:int}/Atualizar")]
         public IActionResult Atualizar(int id, [FromBody] ProdutoCreateDto dto)
         {
             try
@@ -93,7 +93,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int}/Deletar")]
         public IActionResult Deletar(int id)
         {
             try

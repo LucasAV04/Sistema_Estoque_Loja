@@ -15,7 +15,7 @@ namespace API.Controllers
             _estoqueService = estoqueService;
         }
 
-        [HttpGet("{produtoId:int}")]
+        [HttpGet("{produtoId:int}/ObterPorProduto")]
         public IActionResult ObterPorProduto(int produtoId)
         {
             var estoque = _estoqueService.ObterPorProduto(produtoId);
@@ -23,7 +23,7 @@ namespace API.Controllers
         }
 
      
-        [HttpPost("entrada")]
+        [HttpPost("Entrada")]
         public IActionResult Entrada([FromBody] EntradaEstoqueDto dto)
         {
             try
@@ -38,7 +38,7 @@ namespace API.Controllers
         }
 
       
-        [HttpPost("saida")]
+        [HttpPost("Saida")]
         public IActionResult Saida([FromBody] SaidaEstoqueDto dto)
         {
             try

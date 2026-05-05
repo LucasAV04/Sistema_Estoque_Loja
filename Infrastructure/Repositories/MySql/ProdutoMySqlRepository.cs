@@ -25,7 +25,6 @@ namespace Infrastructure.Repositories.MySql
                     nome        AS Nome,
                     descricao   AS Descricao,
                     tipo        AS Tipo,
-                    estado      AS Estado,
                     valor_compra AS Valor_Compra,
                     valor_venda  AS Valor_Venda
                 FROM produto
@@ -46,7 +45,6 @@ namespace Infrastructure.Repositories.MySql
                     nome        AS Nome,
                     descricao   AS Descricao,
                     tipo        AS Tipo,
-                    estado      AS Estado,
                     valor_compra AS Valor_Compra,
                     valor_venda  AS Valor_Venda
                 FROM produto
@@ -67,7 +65,6 @@ namespace Infrastructure.Repositories.MySql
                     nome        AS Nome,
                     descricao   AS Descricao,
                     tipo        AS Tipo,
-                    estado      AS Estado,
                     valor_compra AS Valor_Compra,
                     valor_venda  AS Valor_Venda
                 FROM produto
@@ -92,7 +89,6 @@ namespace Infrastructure.Repositories.MySql
                     nome        AS Nome,
                     descricao   AS Descricao,
                     tipo        AS Tipo,
-                    estado      AS Estado,
                     valor_compra AS Valor_Compra,
                     valor_venda  AS Valor_Venda
                 FROM produto
@@ -108,9 +104,9 @@ namespace Infrastructure.Repositories.MySql
 
             var sql = @"
                 INSERT INTO produto
-                    (ref, nome, descricao, tipo, estado, valor_compra, valor_venda)
+                    (ref, nome, descricao, tipo, valor_compra, valor_venda)
                 VALUES
-                    (@Ref, @Nome, @Descricao, @Tipo, @Estado, @Valor_Compra, @Valor_Venda);
+                    (@Ref, @Nome, @Descricao, @Tipo, @Valor_Compra, @Valor_Venda);
 
                 SELECT LAST_INSERT_ID();
             ";
@@ -129,7 +125,6 @@ namespace Infrastructure.Repositories.MySql
                     nome         = @Nome,
                     descricao    = @Descricao,
                     tipo         = @Tipo,
-                    estado       = @Estado,
                     valor_compra = @Valor_Compra,
                     valor_venda  = @Valor_Venda
                 WHERE id = @Id;

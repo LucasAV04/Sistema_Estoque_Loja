@@ -1,4 +1,5 @@
 using Application.Interfaces;
+using Application.Mappings;
 using Application.Services;
 using Infrastructure.Data.Connection;
 using Infrastructure.Repositories.Interfaces;
@@ -13,8 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
-
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(typeof(ProdutoProfile).Assembly);
 
 
 builder.Services.AddScoped<MySqlConnectionFactory>();

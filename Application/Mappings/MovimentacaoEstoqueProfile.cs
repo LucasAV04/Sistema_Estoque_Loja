@@ -1,7 +1,8 @@
-﻿using AutoMapper;
+﻿using Application.DTOs;
+using AutoMapper;
 using Domain;
 
-namespace Application.DTOs
+namespace Application.Mappings
 {
     public class MovimentacaoEstoqueProfile : Profile
     {

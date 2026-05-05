@@ -15,7 +15,7 @@ namespace API.Controllers
             _movimentacaoService = movimentacaoService;
         }
 
-        [HttpGet]
+        [HttpGet("ListarTodos")]
         public IActionResult ListarTodos()
         {
             var movimentacoes = _movimentacaoService.ListarTodos();
@@ -23,14 +23,14 @@ namespace API.Controllers
         }
 
        
-        [HttpGet("produto/{produtoId:int}")]
+        [HttpGet("produto/{produtoId:int}/ListarPorProduto")]
         public IActionResult ListarPorProduto(int produtoId)
         {
             var movimentacoes = _movimentacaoService.ListarPorProduto(produtoId);
             return Ok(movimentacoes);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}/BuscarPorId")]
         public IActionResult BuscarPorId(int id)
         {
             try
@@ -45,7 +45,7 @@ namespace API.Controllers
         }
 
       
-        [HttpPost]
+        [HttpPost("Registrar")]
         public IActionResult Registrar([FromBody] MovimentacaoEstoqueDto dto)
         {
             try
