@@ -4,18 +4,63 @@ using Application.Services;
 using Infrastructure.Data.Connection;
 using Infrastructure.Repositories.Interfaces;
 using Infrastructure.Repositories.MySql;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 builder.Services.AddControllers();
 
 builder.Services.AddAutoMapper(typeof(ProdutoProfile).Assembly);
 
-builder.Services.AddEndpointsApiExplorer();
+// ── JWT ───────────────────────────────────────────────────────────────────────
+var jwtKey = builder.Configuration["Jwt:Key"]!;
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+var jwtAud = builder.Configuration["Jwt:Audience"];
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = jwtIssuer != null,
+        ValidateAudience = jwtAud != null,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtIssuer,
+        ValidAudience = jwtAud,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+        ClockSkew = TimeSpan.Zero
+    };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnChallenge = async ctx =>
+        {
+            ctx.HandleResponse();
+            ctx.Response.StatusCode = 401;
+            ctx.Response.ContentType = "application/json";
+            await ctx.Response.WriteAsync("{\"mensagem\":\"Token ausente ou inválido.\"}");
+        },
+        OnForbidden = async ctx =>
+        {
+            ctx.Response.StatusCode = 403;
+            ctx.Response.ContentType = "application/json";
+            await ctx.Response.WriteAsync("{\"mensagem\":\"Acesso negado. Permissão insuficiente.\"}");
+        }
+    };
+});
+
+builder.Services.AddAuthorization();
+
+
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
@@ -24,13 +69,14 @@ builder.Services.AddSwaggerGen(options =>
         Version = "v1"
     });
 
-    options.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "Digite sua API Key",
-        Type = SecuritySchemeType.ApiKey,
-        Name = "X-Api-Key",
+        Description = "JWT Bearer. Exemplo: **Bearer {seu_token}**",
+        Name = "Authorization",
         In = ParameterLocation.Header,
-        Scheme = "ApiKeyScheme"
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT"
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -41,7 +87,7 @@ builder.Services.AddSwaggerGen(options =>
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = "ApiKey"
+                    Id   = "Bearer"
                 }
             },
             Array.Empty<string>()
@@ -49,16 +95,13 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("MinhaPolitica", policy =>
     {
-        policy
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
 
@@ -76,53 +119,18 @@ builder.Services.AddScoped<IMovimentacaoEstoqueService, MovimentacaoEstoqueServi
 
 var app = builder.Build();
 
-
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-
-
 app.UseCors("MinhaPolitica");
-
-
 
 app.UseHttpsRedirection();
 
-
-
-app.Use(async (context, next) =>
-{
-    
-    if (context.Request.Path.StartsWithSegments("/swagger"))
-    {
-        await next();
-        return;
-    }
-
-    var apiKey = builder.Configuration["ApiKey"];
-
-    if (!context.Request.Headers.TryGetValue("X-Api-Key", out var receivedKey))
-    {
-        context.Response.StatusCode = 401;
-        await context.Response.WriteAsync("API Key ausente.");
-        return;
-    }
-
-    if (receivedKey != apiKey)
-    {
-        context.Response.StatusCode = 401;
-        await context.Response.WriteAsync("API Key inválida.");
-        return;
-    }
-
-    await next();
-});
-
-
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
