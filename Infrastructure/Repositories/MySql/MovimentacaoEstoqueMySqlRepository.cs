@@ -22,7 +22,7 @@ namespace Infrastructure.Repositories.MySql
                 INSERT INTO movimentacao_estoque
                     (produto_id, tipo, quantidade, origem, observacao, created_at)
                 VALUES
-                    (@Produto_Id, @Tipo, @Quantidade, @Origem, @Observacao, @Created_At);
+                    (@ProdutoId, @Tipo, @Quantidade, @Origem, @Observacao, @Created_At);
 
                 SELECT LAST_INSERT_ID();
             ";
@@ -45,7 +45,7 @@ namespace Infrastructure.Repositories.MySql
             var sql = @"
                 SELECT
                     id          AS Id,
-                    produto_id  AS Produto_Id,
+                    produto_id  AS ProdutoId,
                     tipo        AS Tipo,
                     quantidade  AS Quantidade,
                     origem      AS Origem,
@@ -65,7 +65,7 @@ namespace Infrastructure.Repositories.MySql
             var sql = @"
                 SELECT
                     id          AS Id,
-                    produto_id  AS Produto_Id,
+                    produto_id  AS ProdutoId,
                     tipo        AS Tipo,
                     quantidade  AS Quantidade,
                     origem      AS Origem,
@@ -86,7 +86,7 @@ namespace Infrastructure.Repositories.MySql
             var sql = @"
                 SELECT
                     id          AS Id,
-                    produto_id  AS Produto_Id,
+                    produto_id  AS ProdutoId,
                     tipo        AS Tipo,
                     quantidade  AS Quantidade,
                     origem      AS Origem,

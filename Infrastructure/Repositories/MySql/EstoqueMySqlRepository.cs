@@ -21,7 +21,7 @@ namespace Infrastructure.Repositories.MySql
             var sql = @"
                 SELECT
                     id          AS Id,
-                    produto_id  AS Produto_Id,
+                    produto_id  AS ProdutoId,
                     quantidade  AS Quantidade
                 FROM estoque
                 WHERE produto_id = @produtoId;
@@ -36,7 +36,7 @@ namespace Infrastructure.Repositories.MySql
 
             var sql = @"
                 INSERT INTO estoque (produto_id, quantidade)
-                VALUES (@Produto_Id, @Quantidade);
+                VALUES (@ProdutoId, @Quantidade);
 
                 SELECT LAST_INSERT_ID();
             ";
@@ -51,7 +51,7 @@ namespace Infrastructure.Repositories.MySql
             var sql = @"
                 UPDATE estoque
                 SET quantidade = @Quantidade
-                WHERE produto_id = @Produto_Id;
+                WHERE produto_id = @ProdutoId;
             ";
 
             connection.Execute(sql, estoque);
