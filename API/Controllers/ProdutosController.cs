@@ -1,5 +1,6 @@
 using Application.DTOs;
 using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -15,7 +16,7 @@ namespace API.Controllers
             _produtoService = produtoService;
         }
 
-       
+        [Authorize(Roles = "Admin,User")]
         [HttpGet("Buscar")]
         public IActionResult Buscar([FromQuery] string? nome, [FromQuery] string? Ref)
         {
@@ -27,9 +28,9 @@ namespace API.Controllers
             return Ok(_produtoService.ListarTodos());
         }
 
-       
 
 
+        [Authorize(Roles = "Admin,User")]
         [HttpGet("{id:int}/BuscarPorId")]
         public IActionResult BuscarPorId(int id)
         {
@@ -44,7 +45,7 @@ namespace API.Controllers
             }
         }
 
-        
+        [Authorize(Roles = "Admin,User")]
         [HttpGet("ref/{ref}/BuscarPorRef")]
         public IActionResult BuscarPorRef(string @ref)
         {
@@ -59,7 +60,7 @@ namespace API.Controllers
             }
         }
 
-       
+        [Authorize(Roles = "Admin")]
         [HttpPost("Adicionar")]
         public IActionResult Criar([FromBody] ProdutoCreateDto dto)
         {
@@ -78,7 +79,7 @@ namespace API.Controllers
             }
         }
 
-       
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id:int}/Atualizar")]
         public IActionResult Atualizar(int id, [FromBody] ProdutoCreateDto dto)
         {
@@ -93,6 +94,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}/Deletar")]
         public IActionResult Deletar(int id)
         {

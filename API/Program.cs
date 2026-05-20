@@ -15,7 +15,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddAutoMapper(typeof(ProdutoProfile).Assembly);
 
-// ── JWT ───────────────────────────────────────────────────────────────────────
+
 var jwtKey = builder.Configuration["Jwt:Key"]!;
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];
 var jwtAud = builder.Configuration["Jwt:Audience"];

@@ -1,5 +1,6 @@
 using Application.DTOs;
 using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -14,7 +15,7 @@ namespace API.Controllers
         {
             _estoqueService = estoqueService;
         }
-
+        [Authorize(Roles = "Admin,User")]
         [HttpGet("{produtoId:int}/ObterPorProduto")]
         public IActionResult ObterPorProduto(int produtoId)
         {
@@ -22,7 +23,7 @@ namespace API.Controllers
             return Ok(estoque);
         }
 
-     
+        [Authorize(Roles = "Admin")]
         [HttpPost("Entrada")]
         public IActionResult Entrada([FromBody] EntradaEstoqueDto dto)
         {
@@ -37,7 +38,7 @@ namespace API.Controllers
             }
         }
 
-      
+        [Authorize(Roles = "Admin")]
         [HttpPost("Saida")]
         public IActionResult Saida([FromBody] SaidaEstoqueDto dto)
         {

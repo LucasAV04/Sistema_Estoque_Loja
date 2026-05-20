@@ -1,5 +1,6 @@
 using Application.DTOs;
 using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -15,6 +16,7 @@ namespace API.Controllers
             _movimentacaoService = movimentacaoService;
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpGet("ListarTodos")]
         public IActionResult ListarTodos()
         {
@@ -22,7 +24,7 @@ namespace API.Controllers
             return Ok(movimentacoes);
         }
 
-       
+        [Authorize(Roles = "Admin,User")]
         [HttpGet("produto/{produtoId:int}/ListarPorProduto")]
         public IActionResult ListarPorProduto(int produtoId)
         {
@@ -30,6 +32,7 @@ namespace API.Controllers
             return Ok(movimentacoes);
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpGet("{id:int}/BuscarPorId")]
         public IActionResult BuscarPorId(int id)
         {
@@ -44,7 +47,7 @@ namespace API.Controllers
             }
         }
 
-      
+        [Authorize(Roles = "Admin")]
         [HttpPost("Registrar")]
         public IActionResult Registrar([FromBody] MovimentacaoEstoqueDto dto)
         {
