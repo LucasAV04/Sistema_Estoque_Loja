@@ -12,13 +12,15 @@
   <ItemGroup>
     <Folder Include="Assets\" />
     <Folder Include="Helpers\" />
+    <Folder Include="Models\" />
+    <Folder Include="Services\" />
     <Folder Include="Styles\" />
-    <Folder Include="Views\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
