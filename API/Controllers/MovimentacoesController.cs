@@ -47,7 +47,7 @@ namespace API.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,User")]
         [HttpPost("Registrar")]
         public IActionResult Registrar([FromBody] MovimentacaoEstoqueDto dto)
         {
