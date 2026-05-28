@@ -2,14 +2,110 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Sistema de Estoque"
-        Height="600"
-        Width="1000"
-        WindowStartupLocation="CenterScreen">
+        Height="650"
+        Width="1100"
+        MinHeight="600"
+        MinWidth="900"
+        WindowStartupLocation="CenterScreen"
+	    Background="#F3F4F6">
 
-    <Grid>
-        <TextBlock Text="Tela principal do sistema"
-                   FontSize="28"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"/>
+    <Grid ClipToBounds="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240" MinWidth="240"/>
+            <ColumnDefinition Width="*" MinWidth="600"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- MENU LATERAL -->
+        <Border Grid.Column="0"
+                Background="#111827"  
+                Panel.ZIndex="2">
+            <StackPanel Margin="20">
+
+                <TextBlock
+                           Foreground="White"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           Margin="0,0,0,30"><Run Text="  "/><Run Language="pt-br" Text=" "/><Run Text="Estoque Loja"/></TextBlock>
+
+                <Button Content="Produtos"
+                        Height="40"
+                        Margin="0,0,0,10"
+                        Click="BtnProdutos_Click"/>
+
+                <Button Content="Estoque"
+                        Height="40"
+                        Margin="0,0,0,10"
+                        Click="BtnEstoque_Click"/>
+
+                <Button Content="Entrada"
+                        Height="40"
+                        Margin="0,0,0,10"
+                        Click="BtnEntrada_Click"/>
+
+                <Button Content="Saída / Venda"
+                        Height="40"
+                        Margin="0,0,0,10"
+                        Click="BtnSaida_Click"/>
+
+                <Button Content="Histórico"
+                        Height="40"
+                        Margin="0,0,0,10"
+                        Click="BtnHistorico_Click"/>
+
+                <Button Content="Sair"
+                        Height="40"
+                        Margin="0,40,0,0"
+                        Click="BtnSair_Click"/>
+            </StackPanel>
+        </Border>
+
+        
+        <!-- CONTEÚDO -->
+        <Grid Grid.Column="1"
+      Background="White"
+      ClipToBounds="True">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- TOPO -->
+            <Border Grid.Row="0"
+            Background="White"
+            BorderBrush="#E5E7EB"
+            BorderThickness="0,0,0,1">
+
+                <DockPanel Margin="25,0">
+                    <TextBlock x:Name="TxtUsuarioLogado"
+                       FontSize="16"
+                       FontWeight="SemiBold"
+                       VerticalAlignment="Center"
+                       DockPanel.Dock="Right"/>
+
+                    <TextBlock x:Name="TxtTituloPagina"
+                       Text="Início"
+                       FontSize="26"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"/>
+                </DockPanel>
+            </Border>
+
+            <!-- ÁREA CENTRAL -->
+            <Border Grid.Row="1"
+            Background="White">
+
+                <Grid x:Name="ConteudoPrincipal"
+              Margin="25"
+              ClipToBounds="True">
+
+                    <TextBlock Text="Bem-vindo ao sistema de estoque"
+                       FontSize="26"
+                       Foreground="#374151"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </Window>
