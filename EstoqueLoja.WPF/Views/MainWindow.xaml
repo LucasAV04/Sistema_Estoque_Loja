@@ -7,25 +7,55 @@
         MinHeight="600"
         MinWidth="900"
         WindowStartupLocation="CenterScreen"
-	    Background="#F3F4F6">
+        Background="#F3F4F6">
 
     <Grid ClipToBounds="True">
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="240" MinWidth="240"/>
-            <ColumnDefinition Width="*" MinWidth="600"/>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!-- MENU LATERAL -->
         <Border Grid.Column="0"
-                Background="#111827"  
-                Panel.ZIndex="2">
+                Background="#111827">
+
             <StackPanel Margin="20">
 
-                <TextBlock
+                <!-- LOGO / TÍTULO -->
+                <TextBlock Text="Estoque Loja"
                            Foreground="White"
                            FontSize="24"
                            FontWeight="Bold"
-                           Margin="0,0,0,30"><Run Text="  "/><Run Language="pt-br" Text=" "/><Run Text="Estoque Loja"/></TextBlock>
+                           Margin="0,0,0,20"/>
+
+                <!-- USUÁRIO LOGADO -->
+                <Border Background="#1F2937"
+                        CornerRadius="8"
+                        Padding="10"
+                        Margin="0,0,0,25">
+
+                    <StackPanel>
+
+                        <TextBlock Text="Usuário Logado"
+                                   Foreground="#9CA3AF"
+                                   FontSize="12"/>
+
+                        <TextBlock x:Name="TxtUsuarioLogado"
+                                   Foreground="White"
+                                   FontSize="15"
+                                   FontWeight="SemiBold"/>
+
+                        <TextBlock x:Name="TxtRoleLogada"
+                                   Foreground="#60A5FA"
+                                   FontSize="13"
+                                   FontWeight="Bold"/>
+
+                    </StackPanel>
+
+                </Border>
+
+                <!-- MENU -->
 
                 <Button Content="Produtos"
                         Height="40"
@@ -54,58 +84,24 @@
 
                 <Button Content="Sair"
                         Height="40"
-                        Margin="0,40,0,0"
+                        Margin="0,30,0,0"
                         Click="BtnSair_Click"/>
+
             </StackPanel>
+
         </Border>
 
-        
-        <!-- CONTEÚDO -->
+        <!-- CONTEÚDO PRINCIPAL -->
         <Grid Grid.Column="1"
-      Background="White"
-      ClipToBounds="True">
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="70"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <!-- TOPO -->
-            <Border Grid.Row="0"
-            Background="White"
-            BorderBrush="#E5E7EB"
-            BorderThickness="0,0,0,1">
-
-                <DockPanel Margin="25,0">
-                    <TextBlock x:Name="TxtUsuarioLogado"
-                       FontSize="16"
-                       FontWeight="SemiBold"
-                       VerticalAlignment="Center"
-                       DockPanel.Dock="Right"/>
-
-                    <TextBlock x:Name="TxtTituloPagina"
-                       Text="Início"
-                       FontSize="26"
-                       FontWeight="Bold"
-                       VerticalAlignment="Center"/>
-                </DockPanel>
-            </Border>
-
-            <!-- ÁREA CENTRAL -->
-            <Border Grid.Row="1"
-            Background="White">
-
-                <Grid x:Name="ConteudoPrincipal"
-              Margin="25"
+              Background="White"
               ClipToBounds="True">
 
-                    <TextBlock Text="Bem-vindo ao sistema de estoque"
-                       FontSize="26"
-                       Foreground="#374151"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"/>
-                </Grid>
-            </Border>
+            <Frame x:Name="FramePrincipal"
+                   Margin="25"
+                   NavigationUIVisibility="Hidden"/>
+
         </Grid>
+
     </Grid>
+
 </Window>
