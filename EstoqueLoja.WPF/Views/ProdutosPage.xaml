@@ -3,55 +3,107 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="White">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0"
+		<!-- TÍTULO -->
+		<TextBlock Grid.Row="0"
                    Text="Produtos"
                    FontSize="26"
                    FontWeight="Bold"
                    Margin="0,0,0,20"/>
 
-        <StackPanel Grid.Row="1"
-                    Orientation="Horizontal"
-                    Margin="0,0,0,15">
+		<!-- PESQUISA E FILTRO -->
+		<Grid Grid.Row="1"
+              Margin="0,0,0,15">
 
-            <TextBox x:Name="TxtBuscaNome"
-                     Width="250"
-                     Height="35"
-                     Margin="0,0,10,0"/>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="280"/>
+				<ColumnDefinition Width="15"/>
+				<ColumnDefinition Width="160"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
 
-            <TextBox x:Name="TxtBuscaRef"
-                     Width="180"
-                     Height="35"
-                     Margin="0,0,10,0"/>
+			<!-- BARRA DE PESQUISA -->
+			<Grid Grid.Column="0">
 
-            <Button Content="Buscar"
-                    Width="100"
-                    Height="35"
-                    Click="BtnBuscar_Click"/>
-        </StackPanel>
+				<TextBox x:Name="TxtBusca"
+                         Height="28"
+                         VerticalContentAlignment="Center"
+                         TextChanged="TxtBusca_TextChanged"
+                         ToolTip="Pesquise pelo nome ou pela referência do produto"/>
 
-        <DataGrid Grid.Row="2"
-                  x:Name="GridProdutos"
-                  AutoGenerateColumns="False"
-                  IsReadOnly="True"
-                  VerticalAlignment="Stretch"
-                  HorizontalAlignment="Stretch">
+				<TextBlock Text="Pesquisar por nome ou referência..."
+                           Foreground="#9CA3AF"
+                           Margin="8,0,0,0"
+                           VerticalAlignment="Center"
+                           IsHitTestVisible="False">
 
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
-                <DataGridTextColumn Header="Ref" Binding="{Binding Ref}" Width="120"/>
-                <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="*"/>
-                <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo}" Width="120"/>
-                <DataGridTextColumn Header="Compra" Binding="{Binding Valor_Compra}" Width="120"/>
-                <DataGridTextColumn Header="Venda" Binding="{Binding Valor_Venda}" Width="120"/>
-            </DataGrid.Columns>
+					<TextBlock.Style>
+						<Style TargetType="TextBlock">
+							<Setter Property="Visibility" Value="Collapsed"/>
 
-        </DataGrid>
-    </Grid>
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding Text, ElementName=TxtBusca}" Value="">
+									<Setter Property="Visibility" Value="Visible"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</TextBlock.Style>
+
+				</TextBlock>
+
+			</Grid>
+
+			<!-- FILTRO TIPO -->
+			<ComboBox x:Name="CmbTipo"
+                      Grid.Column="2"
+                      Height="30"
+                      SelectionChanged="CmbTipo_SelectionChanged"
+                      VerticalContentAlignment="Center">
+
+				<ComboBoxItem Content="Todos"/>
+				<ComboBoxItem Content="cadeira"/>
+				<ComboBoxItem Content="mesa"/>
+
+			</ComboBox>
+
+		</Grid>
+		<Border Grid.Row="2"
+				Background="#F3F4F6"
+				Padding="10"
+				CornerRadius="8"
+				Margin="0,0,0,15">
+
+			<TextBlock x:Name="TxtTotalVenda"
+					   Text="Total valor da venda unitária: R$ 0,00"
+					   FontSize="15"
+					   FontWeight="SemiBold"/>
+		</Border>
+
+		<!-- TABELA DE PRODUTOS -->
+		<DataGrid Grid.Row="3"
+          x:Name="GridProdutos"
+          AutoGenerateColumns="False"
+          IsReadOnly="True"
+		  MouseDoubleClick="GridProdutos_MouseDoubleClick">
+
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+				<DataGridTextColumn Header="Ref" Binding="{Binding Ref}" Width="120"/>
+				<DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="*"/>
+				<DataGridTextColumn Header="Tipo" Binding="{Binding Tipo}" Width="120"/>
+				<DataGridTextColumn Header="Compra" Binding="{Binding Valor_Compra}" Width="120"/>
+				<DataGridTextColumn Header="Venda" Binding="{Binding Valor_Venda}" Width="120"/>
+			</DataGrid.Columns>
+
+		</DataGrid>
+
+	</Grid>
+
 </Page>
