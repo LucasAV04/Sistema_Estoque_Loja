@@ -7,5 +7,6 @@ namespace Infrastructure.Repositories.Interfaces
         Estoque? ObterPorProdutoId(int produtoId);
         void Inserir(Estoque estoque);
         void Atualizar(Estoque estoque);
+        IEnumerable<EstoqueDetalhado> ListarEstoqueDetalhado();
     }
 }

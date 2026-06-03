@@ -1,5 +1,6 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
+using AutoMapper;
 using Domain;
 using Infrastructure.Repositories.Interfaces;
 
@@ -8,10 +9,11 @@ namespace Application.Services
     public class EstoqueService : IEstoqueService
     {
         private readonly IEstoqueRepository _repo;
-
-        public EstoqueService(IEstoqueRepository repo)
+        private readonly IMapper _mapper;
+        public EstoqueService(IEstoqueRepository repo,IMapper mapper)
         {
             _repo = repo;
+            _mapper = mapper;
         }
 
         public void Entrada(EntradaEstoqueDto dto)
@@ -67,5 +69,11 @@ namespace Application.Services
                 Quantidade = estoque.Quantidade
             };
         }
+        public IEnumerable<EstoqueDetalhadoResponseDto> ListarDetalhado()
+        {
+            var estoque = _repo.ListarEstoqueDetalhado();
+
+            return _mapper.Map<IEnumerable<EstoqueDetalhadoResponseDto>>(estoque);
+        }
     }
-}
+}   

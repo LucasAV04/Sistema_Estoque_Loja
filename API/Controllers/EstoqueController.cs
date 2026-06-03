@@ -56,5 +56,13 @@ namespace API.Controllers
                 return BadRequest(new { mensagem = ex.Message });
             }
         }
+
+        [Authorize(Roles = "Admin,User")]
+        [HttpGet("Detalhado")]
+        public IActionResult ListarDetalhado()
+        {
+            var estoque = _estoqueService.ListarDetalhado();
+            return Ok(estoque);
+        }
     }
 }

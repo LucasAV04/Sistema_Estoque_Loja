@@ -56,5 +56,24 @@ namespace Infrastructure.Repositories.MySql
 
             connection.Execute(sql, estoque);
         }
+        public IEnumerable<EstoqueDetalhado> ListarEstoqueDetalhado()
+        {
+            using var connection = _connectionFactory.Create();
+
+            var sql = @"
+         SELECT 
+            p.id AS ProdutoId,
+            p.ref AS Ref,
+            p.nome AS Nome,
+            p.tipo AS Tipo,
+            COALESCE(e.quantidade, 0) AS Quantidade,
+            p.valor_venda AS ValorVenda,
+            COALESCE(e.quantidade, 0) * p.valor_venda AS ValorTotal
+        FROM produto p
+        LEFT JOIN estoque e ON e.produto_id = p.id
+        ORDER BY p.nome";
+
+            return connection.Query<EstoqueDetalhado>(sql);
+        }
     }
 }

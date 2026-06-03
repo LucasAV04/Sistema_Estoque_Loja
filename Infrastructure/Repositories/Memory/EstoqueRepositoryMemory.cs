@@ -23,5 +23,10 @@ namespace Infrastructure.Repositories.Memory
             if (existente != null)
                 existente.Quantidade = estoque.Quantidade;
         }
+        public IEnumerable<EstoqueDetalhado> ListarEstoqueDetalhado()
+        {
+            return new List<EstoqueDetalhado>();
+        }
+
     }
 }

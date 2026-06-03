@@ -7,5 +7,6 @@ namespace Application.Interfaces
         void Entrada(EntradaEstoqueDto dto);
         void Saida(SaidaEstoqueDto dto);
         EstoqueResponseDto ObterPorProduto(int produtoId);
+        IEnumerable<EstoqueDetalhadoResponseDto> ListarDetalhado();
     }
 }

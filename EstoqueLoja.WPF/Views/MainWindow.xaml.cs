@@ -25,8 +25,7 @@ namespace EstoqueLoja.WPF.Views
 
         private void BtnEstoque_Click(object sender, RoutedEventArgs e)
         {
-
-            FramePrincipal.Navigate(new ProdutosPage());
+            TrocarConteudo(new EstoquePage());
         }
 
         private void BtnEntrada_Click(object sender, RoutedEventArgs e)

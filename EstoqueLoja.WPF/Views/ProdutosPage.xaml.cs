@@ -94,7 +94,7 @@ namespace EstoqueLoja.WPF.Views
 
             var totalVenda = listaFinal.Sum(p => p.Valor_Venda);
 
-            TxtTotalVenda.Text = $"Total valor de venda: {totalVenda:C2}";
+            TxtTotalVenda.Text = $"Valor total da venda unitária: {totalVenda:C2}";
         }
 
         private async void GridProdutos_MouseDoubleClick(object sender, MouseButtonEventArgs e)
