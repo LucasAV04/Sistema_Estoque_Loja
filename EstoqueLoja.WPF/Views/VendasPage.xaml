@@ -1,0 +1,235 @@
+﻿<Page x:Class="EstoqueLoja.WPF.Views.VendasPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="White">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- TÍTULO -->
+        <TextBlock Grid.Row="0"
+                   Text="Venda"
+                   FontSize="26"
+                   FontWeight="Bold"
+                   Margin="0,0,0,16"/>
+
+        <!-- PESQUISA DE PRODUTO -->
+        <Grid Grid.Row="1" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <TextBox x:Name="TxtBuscaProduto"
+                         Height="32"
+                         VerticalContentAlignment="Center"
+                         KeyDown="TxtBuscaProduto_KeyDown"
+                         TextChanged="TxtBuscaProduto_TextChanged"/>
+                <TextBlock Text="Pesquisar produto por nome ou referência..."
+                           Foreground="#9CA3AF"
+                           Margin="8,0,0,0"
+                           VerticalAlignment="Center"
+                           IsHitTestVisible="False">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=TxtBuscaProduto}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+
+            <Button Grid.Column="2"
+                    Content="Adicionar ao Carrinho"
+                    Height="32"
+                    Padding="14,0"
+                    Click="BtnAdicionar_Click"/>
+        </Grid>
+
+        <!-- LISTA DE RESULTADOS DA PESQUISA -->
+        <ListBox x:Name="ListResultados"
+                 Grid.Row="2"
+                 MaxHeight="130"
+                 Margin="0,0,0,10"
+                 SelectionChanged="ListResultados_SelectionChanged"
+                 Visibility="Collapsed"
+                 DisplayMemberPath="Nome"/>
+
+        <!-- CARRINHO -->
+        <Border Grid.Row="3"
+                BorderBrush="#E5E7EB"
+                BorderThickness="1"
+                CornerRadius="8"
+                Margin="0,0,0,10"
+                Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Text="Carrinho"
+                           FontSize="15"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,8"/>
+
+                <DataGrid Grid.Row="1"
+                          x:Name="GridCarrinho"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="False"
+                          MaxHeight="160"
+                          CanUserAddRows="False"
+                          SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Ref"
+                                            Binding="{Binding RefProduto}"
+                                            Width="100"
+                                            IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Produto"
+                                            Binding="{Binding NomeProduto}"
+                                            Width="*"
+                                            IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Qtd"
+                                            Binding="{Binding Quantidade}"
+                                            Width="70"/>
+                        <DataGridTextColumn Header="Valor Unit."
+                                            Binding="{Binding ValorUnitario, StringFormat=C2}"
+                                            Width="110"
+                                            IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Total"
+                                            Binding="{Binding ValorTotal, StringFormat=C2}"
+                                            Width="110"
+                                            IsReadOnly="True"/>
+                        <DataGridTemplateColumn Width="80">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Remover"
+                                            FontSize="11"
+                                            Click="BtnRemoverItem_Click"
+                                            Tag="{Binding}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- TOTAL DO CARRINHO -->
+                <Border Grid.Row="2"
+                        Background="#F9FAFB"
+                        CornerRadius="6"
+                        Padding="10,8"
+                        Margin="0,8,0,0">
+                    <Grid>
+                        <TextBlock Text="TOTAL"
+                                   FontWeight="Bold"
+                                   FontSize="14"/>
+                        <TextBlock x:Name="TxtTotalCarrinho"
+                                   Text="R$ 0,00"
+                                   FontWeight="Bold"
+                                   FontSize="14"
+                                   HorizontalAlignment="Right"/>
+                    </Grid>
+                </Border>
+
+                <!-- BOTÃO FINALIZAR -->
+                <Button Grid.Row="3"
+                        x:Name="BtnFinalizar"
+                        Content="Finalizar Venda"
+                        Height="38"
+                        Margin="0,10,0,0"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Click="BtnFinalizar_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- HISTÓRICO DE VENDAS -->
+        <Grid Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           Text="Histórico de Vendas"
+                           FontSize="15"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"/>
+
+                <Button Grid.Column="2"
+                        Content="↻  Atualizar"
+                        Height="28"
+                        Padding="10,0"
+                        Click="BtnAtualizarHistorico_Click"/>
+            </Grid>
+
+            <!-- BUSCA NO HISTÓRICO -->
+            <Grid Grid.Row="1" Margin="0,0,0,8">
+                <TextBox x:Name="TxtBuscaHistorico"
+                         Height="28"
+                         VerticalContentAlignment="Center"
+                         TextChanged="TxtBuscaHistorico_TextChanged"/>
+                <TextBlock Text="Filtrar por nº da venda ou produto..."
+                           Foreground="#9CA3AF"
+                           Margin="8,0,0,0"
+                           VerticalAlignment="Center"
+                           IsHitTestVisible="False">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=TxtBuscaHistorico}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+
+            <DataGrid Grid.Row="2"
+                      x:Name="GridHistorico"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      MouseDoubleClick="GridHistorico_MouseDoubleClick">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Nº"
+                                        Binding="{Binding Id}"
+                                        Width="60"/>
+                    <DataGridTextColumn Header="Data"
+                                        Binding="{Binding Data, StringFormat=dd/MM/yyyy HH:mm}"
+                                        Width="150"/>
+                    <DataGridTextColumn Header="Itens"
+                                        Binding="{Binding TotalItens}"
+                                        Width="80"/>
+                    <DataGridTextColumn Header="Total"
+                                        Binding="{Binding ValorTotal, StringFormat=C2}"
+                                        Width="130"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</Page>

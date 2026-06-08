@@ -28,10 +28,10 @@ namespace EstoqueLoja.WPF.Views
             TrocarConteudo(new EstoquePage());
         }
 
-        private void BtnEntrada_Click(object sender, RoutedEventArgs e)
+        private void BtnVenda_Click(object sender, RoutedEventArgs e)
         {
 
-            FramePrincipal.Navigate(new ProdutosPage());
+            TrocarConteudo(new VendasPage());
         }
         private void BtnSaida_Click(object sender, RoutedEventArgs e)
         {
