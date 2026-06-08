@@ -116,6 +116,8 @@ builder.Services.AddScoped<IProdutoService, ProdutoService>();
 builder.Services.AddScoped<IEstoqueService, EstoqueService>();
 builder.Services.AddScoped<IMovimentacaoEstoqueService, MovimentacaoEstoqueService>();
 
+builder.Services.AddScoped<IVendaRepository, VendaMySqlRepository>();
+builder.Services.AddScoped<IVendaService, VendaService>();
 
 var app = builder.Build();
 

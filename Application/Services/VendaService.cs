@@ -26,7 +26,7 @@ namespace Application.Services
             if (dto.Itens == null || !dto.Itens.Any())
                 throw new ArgumentException("A venda deve conter ao menos um item.");
 
-            // Valida estoque de todos os itens antes de qualquer alteração
+           
             foreach (var item in dto.Itens)
             {
                 var produto = _produtoRepository.BuscarPorId(item.ProdutoId);
@@ -62,7 +62,7 @@ namespace Application.Services
 
                 _vendaRepository.InserirItem(vendaItem);
 
-                // Baixa o estoque
+               
                 var estoque = _estoqueRepository.ObterPorProdutoId(itemDto.ProdutoId);
                 estoque!.Quantidade -= itemDto.Quantidade;
                 _estoqueRepository.Atualizar(estoque);
