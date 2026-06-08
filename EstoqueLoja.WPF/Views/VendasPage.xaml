@@ -1,235 +1,498 @@
 ﻿<Page x:Class="EstoqueLoja.WPF.Views.VendasPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Background="White">
+      Background="#F3F4F6"
+      FontFamily="Segoe UI">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+	<Page.Resources>
 
-        <!-- TÍTULO -->
-        <TextBlock Grid.Row="0"
-                   Text="Venda"
-                   FontSize="26"
-                   FontWeight="Bold"
-                   Margin="0,0,0,16"/>
+		<Style x:Key="CardBorder" TargetType="Border">
+			<Setter Property="Background" Value="White"/>
+			<Setter Property="CornerRadius" Value="10"/>
+			<Setter Property="Padding" Value="18"/>
+			<Setter Property="Margin" Value="0,0,0,14"/>
+		</Style>
 
-        <!-- PESQUISA DE PRODUTO -->
-        <Grid Grid.Row="1" Margin="0,0,0,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="10"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+		<Style x:Key="PrimaryButton" TargetType="Button">
+			<Setter Property="Height" Value="36"/>
+			<Setter Property="Padding" Value="16,0"/>
+			<Setter Property="FontSize" Value="13"/>
+			<Setter Property="FontWeight" Value="SemiBold"/>
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="Background" Value="#1B2A4A"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="Cursor" Value="Hand"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="Button">
+						<Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="7">
+							<ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter TargetName="border" Property="Background" Value="#243460"/>
+							</Trigger>
+							<Trigger Property="IsPressed" Value="True">
+								<Setter TargetName="border" Property="Background" Value="#152038"/>
+							</Trigger>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter TargetName="border" Property="Background" Value="#9CA3AF"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 
-            <Grid Grid.Column="0">
-                <TextBox x:Name="TxtBuscaProduto"
-                         Height="32"
-                         VerticalContentAlignment="Center"
-                         KeyDown="TxtBuscaProduto_KeyDown"
-                         TextChanged="TxtBuscaProduto_TextChanged"/>
-                <TextBlock Text="Pesquisar produto por nome ou referência..."
-                           Foreground="#9CA3AF"
-                           Margin="8,0,0,0"
-                           VerticalAlignment="Center"
-                           IsHitTestVisible="False">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Text, ElementName=TxtBuscaProduto}" Value="">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-            </Grid>
+		<Style x:Key="SecondaryButton" TargetType="Button">
+			<Setter Property="Height" Value="36"/>
+			<Setter Property="Padding" Value="16,0"/>
+			<Setter Property="FontSize" Value="13"/>
+			<Setter Property="FontWeight" Value="SemiBold"/>
+			<Setter Property="Foreground" Value="#1B2A4A"/>
+			<Setter Property="Background" Value="White"/>
+			<Setter Property="BorderBrush" Value="#D1D5DB"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="Cursor" Value="Hand"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="Button">
+						<Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="7">
+							<ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter TargetName="border" Property="Background" Value="#F3F4F6"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 
-            <Button Grid.Column="2"
-                    Content="Adicionar ao Carrinho"
-                    Height="32"
-                    Padding="14,0"
-                    Click="BtnAdicionar_Click"/>
-        </Grid>
+		<Style x:Key="SuccessButton" TargetType="Button">
+			<Setter Property="Height" Value="44"/>
+			<Setter Property="FontSize" Value="14"/>
+			<Setter Property="FontWeight" Value="SemiBold"/>
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="Background" Value="#065F46"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="Cursor" Value="Hand"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="Button">
+						<Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="8">
+							<ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter TargetName="border" Property="Background" Value="#047857"/>
+							</Trigger>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter TargetName="border" Property="Background" Value="#9CA3AF"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 
-        <!-- LISTA DE RESULTADOS DA PESQUISA -->
-        <ListBox x:Name="ListResultados"
-                 Grid.Row="2"
-                 MaxHeight="130"
-                 Margin="0,0,0,10"
-                 SelectionChanged="ListResultados_SelectionChanged"
-                 Visibility="Collapsed"
-                 DisplayMemberPath="Nome"/>
+		<Style x:Key="InputStyle" TargetType="TextBox">
+			<Setter Property="Height" Value="36"/>
+			<Setter Property="Padding" Value="10,0"/>
+			<Setter Property="FontSize" Value="13"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+			<Setter Property="BorderBrush" Value="#D1D5DB"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="TextBox">
+						<Border Background="White"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="7">
+							<ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsFocused" Value="True">
+								<Setter Property="BorderBrush" Value="#1B2A4A"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 
-        <!-- CARRINHO -->
-        <Border Grid.Row="3"
-                BorderBrush="#E5E7EB"
-                BorderThickness="1"
-                CornerRadius="8"
-                Margin="0,0,0,10"
-                Padding="10">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+	</Page.Resources>
 
-                <TextBlock Grid.Row="0"
-                           Text="Carrinho"
-                           FontSize="15"
-                           FontWeight="SemiBold"
-                           Margin="0,0,0,8"/>
+	<ScrollViewer VerticalScrollBarVisibility="Auto">
+		<Grid Margin="0,4,0,20">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
 
-                <DataGrid Grid.Row="1"
-                          x:Name="GridCarrinho"
-                          AutoGenerateColumns="False"
-                          IsReadOnly="False"
-                          MaxHeight="160"
-                          CanUserAddRows="False"
-                          SelectionMode="Single">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Ref"
-                                            Binding="{Binding RefProduto}"
-                                            Width="100"
-                                            IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Produto"
-                                            Binding="{Binding NomeProduto}"
-                                            Width="*"
-                                            IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Qtd"
-                                            Binding="{Binding Quantidade}"
-                                            Width="70"/>
-                        <DataGridTextColumn Header="Valor Unit."
-                                            Binding="{Binding ValorUnitario, StringFormat=C2}"
-                                            Width="110"
-                                            IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Total"
-                                            Binding="{Binding ValorTotal, StringFormat=C2}"
-                                            Width="110"
-                                            IsReadOnly="True"/>
-                        <DataGridTemplateColumn Width="80">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Content="Remover"
-                                            FontSize="11"
-                                            Click="BtnRemoverItem_Click"
-                                            Tag="{Binding}"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+			<!-- CABEÇALHO -->
+			<Grid Grid.Row="0" Margin="0,0,0,18">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
 
-                <!-- TOTAL DO CARRINHO -->
-                <Border Grid.Row="2"
-                        Background="#F9FAFB"
-                        CornerRadius="6"
-                        Padding="10,8"
-                        Margin="0,8,0,0">
-                    <Grid>
-                        <TextBlock Text="TOTAL"
-                                   FontWeight="Bold"
-                                   FontSize="14"/>
-                        <TextBlock x:Name="TxtTotalCarrinho"
-                                   Text="R$ 0,00"
-                                   FontWeight="Bold"
+				<StackPanel Grid.Column="0">
+					<TextBlock Text="Venda"
+                               FontSize="26"
+                               FontWeight="Bold"
+                               Foreground="#111827"/>
+					<TextBlock Text="Adicione produtos ao carrinho e finalize a venda"
+                               FontSize="12"
+                               Foreground="#6B7280"
+                               Margin="0,2,0,0"/>
+				</StackPanel>
+
+				<Button Grid.Column="1"
+                        Content="📋  Histórico de Vendas"
+                        Style="{StaticResource SecondaryButton}"
+                        VerticalAlignment="Center"
+                        Click="BtnHistorico_Click"/>
+			</Grid>
+
+			<!-- CARD: PESQUISA DE PRODUTO -->
+			<Border Grid.Row="1" Style="{StaticResource CardBorder}">
+				<StackPanel>
+
+					<TextBlock Text="Pesquisar Produto"
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               Foreground="#374151"
+                               Margin="0,0,0,10"/>
+
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="10"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+
+						<Grid Grid.Column="0">
+							<TextBox x:Name="TxtBuscaProduto"
+                                     Style="{StaticResource InputStyle}"
+                                     KeyDown="TxtBuscaProduto_KeyDown"
+                                     TextChanged="TxtBuscaProduto_TextChanged"/>
+							<TextBlock Text="Digite o nome ou referência do produto..."
+                                       Foreground="#9CA3AF"
+                                       Margin="12,0,0,0"
+                                       FontSize="13"
+                                       VerticalAlignment="Center"
+                                       IsHitTestVisible="False">
+								<TextBlock.Style>
+									<Style TargetType="TextBlock">
+										<Setter Property="Visibility" Value="Collapsed"/>
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding Text, ElementName=TxtBuscaProduto}" Value="">
+												<Setter Property="Visibility" Value="Visible"/>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</TextBlock.Style>
+							</TextBlock>
+						</Grid>
+
+						<Button Grid.Column="2"
+                                Content="+ Adicionar ao Carrinho"
+                                Style="{StaticResource PrimaryButton}"
+                                Click="BtnAdicionar_Click"/>
+					</Grid>
+
+					<!-- RESULTADOS DA PESQUISA com Ref + Nome + Preço -->
+					<Border x:Name="BorderResultados"
+                            Margin="0,8,0,0"
+                            BorderBrush="#E5E7EB"
+                            BorderThickness="1"
+                            CornerRadius="7"
+                            Visibility="Collapsed">
+						<ListBox x:Name="ListResultados"
+                                 MaxHeight="160"
+                                 BorderThickness="0"
+                                 Background="White"
+                                 SelectionChanged="ListResultados_SelectionChanged">
+							<ListBox.ItemContainerStyle>
+								<Style TargetType="ListBoxItem">
+									<Setter Property="Padding" Value="12,8"/>
+									<Setter Property="Cursor" Value="Hand"/>
+									<Style.Triggers>
+										<Trigger Property="IsMouseOver" Value="True">
+											<Setter Property="Background" Value="#EFF6FF"/>
+										</Trigger>
+										<Trigger Property="IsSelected" Value="True">
+											<Setter Property="Background" Value="#DBEAFE"/>
+										</Trigger>
+									</Style.Triggers>
+								</Style>
+							</ListBox.ItemContainerStyle>
+							<ListBox.ItemTemplate>
+								<DataTemplate>
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="Auto"/>
+											<ColumnDefinition Width="10"/>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="Auto"/>
+										</Grid.ColumnDefinitions>
+
+										<!-- REF -->
+										<Border Grid.Column="0"
+                                                Background="#EFF6FF"
+                                                CornerRadius="4"
+                                                Padding="6,2">
+											<TextBlock FontSize="11"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="#1D4ED8">
+												<Run Text="REF: "/>
+												<Run Text="{Binding Ref}"/>
+											</TextBlock>
+										</Border>
+
+										<!-- NOME -->
+										<TextBlock Grid.Column="2"
+                                                   Text="{Binding Nome}"
+                                                   FontSize="13"
+                                                   Foreground="#111827"
+                                                   VerticalAlignment="Center"/>
+
+										<!-- PREÇO -->
+										<TextBlock Grid.Column="3"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="#065F46"
+                                                   VerticalAlignment="Center">
+											<Run Text="{Binding Valor_Venda, StringFormat=C2}"/>
+										</TextBlock>
+									</Grid>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListBox>
+					</Border>
+
+				</StackPanel>
+			</Border>
+
+			<!-- CARD: CARRINHO -->
+			<Border Grid.Row="2" Style="{StaticResource CardBorder}">
+				<StackPanel>
+
+					<Grid Margin="0,0,0,12">
+						<TextBlock Text="Carrinho"
                                    FontSize="14"
-                                   HorizontalAlignment="Right"/>
-                    </Grid>
-                </Border>
+                                   FontWeight="SemiBold"
+                                   Foreground="#374151"/>
+						<TextBlock x:Name="TxtQtdItensCarrinho"
+                                   Text="0 item(ns)"
+                                   FontSize="12"
+                                   Foreground="#6B7280"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"/>
+					</Grid>
 
-                <!-- BOTÃO FINALIZAR -->
-                <Button Grid.Row="3"
-                        x:Name="BtnFinalizar"
-                        Content="Finalizar Venda"
-                        Height="38"
-                        Margin="0,10,0,0"
-                        FontSize="14"
-                        FontWeight="SemiBold"
-                        Click="BtnFinalizar_Click"/>
-            </Grid>
-        </Border>
+					<!-- Estado vazio -->
+					<Border x:Name="BorderCarrinhoVazio"
+                            Background="#F9FAFB"
+                            CornerRadius="7"
+                            Padding="20"
+                            Margin="0,0,0,12">
+						<TextBlock Text="Nenhum produto adicionado. Pesquise e adicione produtos acima."
+                                   FontSize="13"
+                                   Foreground="#9CA3AF"
+                                   HorizontalAlignment="Center"/>
+					</Border>
 
-        <!-- HISTÓRICO DE VENDAS -->
-        <Grid Grid.Row="4">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+					<DataGrid x:Name="GridCarrinho"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="False"
+                              MaxHeight="200"
+                              CanUserAddRows="False"
+                              CanUserResizeRows="False"
+                              SelectionMode="Single"
+                              BorderThickness="1"
+                              BorderBrush="#E5E7EB"
+                              GridLinesVisibility="Horizontal"
+                              RowBackground="White"
+                              AlternatingRowBackground="#F9FAFB"
+                              Visibility="Collapsed">
 
-            <Grid Grid.Row="0" Margin="0,0,0,8">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+						<DataGrid.ColumnHeaderStyle>
+							<Style TargetType="DataGridColumnHeader">
+								<Setter Property="Background" Value="#F3F4F6"/>
+								<Setter Property="Foreground" Value="#374151"/>
+								<Setter Property="FontWeight" Value="SemiBold"/>
+								<Setter Property="FontSize" Value="12"/>
+								<Setter Property="Padding" Value="10,8"/>
+								<Setter Property="BorderThickness" Value="0"/>
+							</Style>
+						</DataGrid.ColumnHeaderStyle>
 
-                <TextBlock Grid.Column="0"
-                           Text="Histórico de Vendas"
-                           FontSize="15"
-                           FontWeight="SemiBold"
-                           VerticalAlignment="Center"/>
+						<DataGrid.RowStyle>
+							<Style TargetType="DataGridRow">
+								<Setter Property="FontSize" Value="13"/>
+							</Style>
+						</DataGrid.RowStyle>
 
-                <Button Grid.Column="2"
-                        Content="↻  Atualizar"
-                        Height="28"
-                        Padding="10,0"
-                        Click="BtnAtualizarHistorico_Click"/>
-            </Grid>
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="Ref"
+                                                Binding="{Binding RefProduto}"
+                                                Width="100"
+                                                IsReadOnly="True">
+								<DataGridTextColumn.ElementStyle>
+									<Style TargetType="TextBlock">
+										<Setter Property="Padding" Value="10,8"/>
+										<Setter Property="Foreground" Value="#6B7280"/>
+									</Style>
+								</DataGridTextColumn.ElementStyle>
+							</DataGridTextColumn>
 
-            <!-- BUSCA NO HISTÓRICO -->
-            <Grid Grid.Row="1" Margin="0,0,0,8">
-                <TextBox x:Name="TxtBuscaHistorico"
-                         Height="28"
-                         VerticalContentAlignment="Center"
-                         TextChanged="TxtBuscaHistorico_TextChanged"/>
-                <TextBlock Text="Filtrar por nº da venda ou produto..."
-                           Foreground="#9CA3AF"
-                           Margin="8,0,0,0"
-                           VerticalAlignment="Center"
-                           IsHitTestVisible="False">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Text, ElementName=TxtBuscaHistorico}" Value="">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-            </Grid>
+							<DataGridTextColumn Header="Produto"
+                                                Binding="{Binding NomeProduto}"
+                                                Width="*"
+                                                IsReadOnly="True">
+								<DataGridTextColumn.ElementStyle>
+									<Style TargetType="TextBlock">
+										<Setter Property="Padding" Value="10,8"/>
+										<Setter Property="Foreground" Value="#111827"/>
+									</Style>
+								</DataGridTextColumn.ElementStyle>
+							</DataGridTextColumn>
 
-            <DataGrid Grid.Row="2"
-                      x:Name="GridHistorico"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      MouseDoubleClick="GridHistorico_MouseDoubleClick">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Nº"
-                                        Binding="{Binding Id}"
-                                        Width="60"/>
-                    <DataGridTextColumn Header="Data"
-                                        Binding="{Binding Data, StringFormat=dd/MM/yyyy HH:mm}"
-                                        Width="150"/>
-                    <DataGridTextColumn Header="Itens"
-                                        Binding="{Binding TotalItens}"
-                                        Width="80"/>
-                    <DataGridTextColumn Header="Total"
-                                        Binding="{Binding ValorTotal, StringFormat=C2}"
-                                        Width="130"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
-    </Grid>
+							<DataGridTextColumn Header="Qtd"
+                                                Binding="{Binding Quantidade}"
+                                                Width="65">
+								<DataGridTextColumn.ElementStyle>
+									<Style TargetType="TextBlock">
+										<Setter Property="Padding" Value="10,8"/>
+										<Setter Property="TextAlignment" Value="Center"/>
+									</Style>
+								</DataGridTextColumn.ElementStyle>
+							</DataGridTextColumn>
+
+							<DataGridTextColumn Header="Unit."
+                                                Binding="{Binding ValorUnitario, StringFormat=C2}"
+                                                Width="110"
+                                                IsReadOnly="True">
+								<DataGridTextColumn.ElementStyle>
+									<Style TargetType="TextBlock">
+										<Setter Property="Padding" Value="10,8"/>
+										<Setter Property="TextAlignment" Value="Right"/>
+										<Setter Property="Foreground" Value="#374151"/>
+									</Style>
+								</DataGridTextColumn.ElementStyle>
+							</DataGridTextColumn>
+
+							<DataGridTextColumn Header="Total"
+                                                Binding="{Binding ValorTotal, StringFormat=C2}"
+                                                Width="110"
+                                                IsReadOnly="True">
+								<DataGridTextColumn.ElementStyle>
+									<Style TargetType="TextBlock">
+										<Setter Property="Padding" Value="10,8"/>
+										<Setter Property="TextAlignment" Value="Right"/>
+										<Setter Property="FontWeight" Value="SemiBold"/>
+										<Setter Property="Foreground" Value="#065F46"/>
+									</Style>
+								</DataGridTextColumn.ElementStyle>
+							</DataGridTextColumn>
+
+							<DataGridTemplateColumn Header="" Width="90">
+								<DataGridTemplateColumn.CellTemplate>
+									<DataTemplate>
+										<Button Content="Remover"
+                                                Height="26"
+                                                Padding="8,0"
+                                                FontSize="11"
+                                                Foreground="#C0392B"
+                                                Background="Transparent"
+                                                BorderBrush="#FECACA"
+                                                BorderThickness="1"
+                                                Cursor="Hand"
+                                                Margin="4,3"
+                                                Tag="{Binding}"
+                                                Click="BtnRemoverItem_Click">
+											<Button.Template>
+												<ControlTemplate TargetType="Button">
+													<Border x:Name="b"
+                                                            Background="{TemplateBinding Background}"
+                                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                                            CornerRadius="5">
+														<ContentPresenter HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center"/>
+													</Border>
+													<ControlTemplate.Triggers>
+														<Trigger Property="IsMouseOver" Value="True">
+															<Setter TargetName="b" Property="Background" Value="#FEF2F2"/>
+														</Trigger>
+													</ControlTemplate.Triggers>
+												</ControlTemplate>
+											</Button.Template>
+										</Button>
+									</DataTemplate>
+								</DataGridTemplateColumn.CellTemplate>
+							</DataGridTemplateColumn>
+						</DataGrid.Columns>
+					</DataGrid>
+
+					<!-- TOTAL + BOTÃO FINALIZAR -->
+					<Grid Margin="0,14,0,0">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="20"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+
+						<Border Grid.Column="0"
+                                Background="#F0FDF4"
+                                BorderBrush="#BBF7D0"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="16,10">
+							<StackPanel>
+								<TextBlock Text="TOTAL DA VENDA"
+                                           FontSize="11"
+                                           FontWeight="SemiBold"
+                                           Foreground="#6B7280"
+                                           Margin="0,0,0,2"/>
+								<TextBlock x:Name="TxtTotalCarrinho"
+                                           Text="R$ 0,00"
+                                           FontSize="22"
+                                           FontWeight="Bold"
+                                           Foreground="#065F46"/>
+							</StackPanel>
+						</Border>
+
+						<Button Grid.Column="2"
+                                x:Name="BtnFinalizar"
+                                Content="✔  Finalizar Venda"
+                                Style="{StaticResource SuccessButton}"
+                                Width="200"
+                                Click="BtnFinalizar_Click"/>
+					</Grid>
+
+				</StackPanel>
+			</Border>
+
+		</Grid>
+	</ScrollViewer>
 </Page>

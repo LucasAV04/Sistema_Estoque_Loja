@@ -1,28 +1,37 @@
 ﻿using EstoqueLoja.WPF.DTOs;
 using EstoqueLoja.WPF.Services;
-using EstoqueLoja.WPF.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace EstoqueLoja.WPF.Views
 {
-    public partial class VendasPage:Page
+    public partial class VendasPage : Page
     {
         private readonly ProdutoApiService _produtoApi = new();
         private readonly VendaApiService _vendaApi = new();
 
         private List<ProdutoResponseDto> _resultadosBusca = new();
         private List<VendaItemDto> _carrinho = new();
-        private List<VendaHistoricoViewModel> _historico = new();
 
         public VendasPage()
         {
             InitializeComponent();
-            CarregarHistorico();
+            AtualizarCarrinho();
         }
 
-        // ── PESQUISA DE PRODUTO ──────────────────────────────────────
+        
+
+        private void BtnHistorico_Click(object sender, RoutedEventArgs e)
+        {
+            var janela = new HistoricoVendasWindow
+            {
+                Owner = Window.GetWindow(this)
+            };
+            janela.ShowDialog();
+        }
+
+      
 
         private async void TxtBuscaProduto_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -30,7 +39,8 @@ namespace EstoqueLoja.WPF.Views
 
             if (string.IsNullOrWhiteSpace(termo))
             {
-                ListResultados.Visibility = Visibility.Collapsed;
+                BorderResultados.Visibility = Visibility.Collapsed;
+                _resultadosBusca.Clear();
                 return;
             }
 
@@ -43,10 +53,12 @@ namespace EstoqueLoja.WPF.Views
                     .Concat(porRef)
                     .GroupBy(p => p.Id)
                     .Select(g => g.First())
+                    .OrderBy(p => p.Nome)
                     .ToList();
 
                 ListResultados.ItemsSource = _resultadosBusca;
-                ListResultados.Visibility = _resultadosBusca.Any()
+
+                BorderResultados.Visibility = _resultadosBusca.Any()
                     ? Visibility.Visible
                     : Visibility.Collapsed;
             }
@@ -57,6 +69,8 @@ namespace EstoqueLoja.WPF.Views
         {
             if (e.Key == Key.Enter)
                 AdicionarAoCarrinho();
+            else if (e.Key == Key.Down && ListResultados.Items.Count > 0)
+                ListResultados.Focus();
         }
 
         private void ListResultados_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -64,7 +78,7 @@ namespace EstoqueLoja.WPF.Views
             if (ListResultados.SelectedItem is ProdutoResponseDto produto)
             {
                 TxtBuscaProduto.Text = produto.Nome;
-                ListResultados.Visibility = Visibility.Collapsed;
+                BorderResultados.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -84,18 +98,18 @@ namespace EstoqueLoja.WPF.Views
 
             if (produto == null)
             {
-                MessageBox.Show("Selecione um produto da lista de resultados.");
+                MessageBox.Show(
+                    "Selecione um produto da lista de resultados.",
+                    "Produto não selecionado",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
                 return;
             }
 
-            // Se já existe no carrinho, incrementa
             var existente = _carrinho.FirstOrDefault(i => i.ProdutoId == produto.Id);
             if (existente != null)
-            {
                 existente.Quantidade++;
-            }
             else
-            {
                 _carrinho.Add(new VendaItemDto
                 {
                     ProdutoId = produto.Id,
@@ -104,11 +118,11 @@ namespace EstoqueLoja.WPF.Views
                     Quantidade = 1,
                     ValorUnitario = produto.Valor_Venda
                 });
-            }
 
             AtualizarCarrinho();
             TxtBuscaProduto.Clear();
-            ListResultados.Visibility = Visibility.Collapsed;
+            BorderResultados.Visibility = Visibility.Collapsed;
+            ListResultados.SelectedItem = null;
             _resultadosBusca.Clear();
         }
 
@@ -123,25 +137,38 @@ namespace EstoqueLoja.WPF.Views
 
         private void AtualizarCarrinho()
         {
+            var temItens = _carrinho.Any();
+
+            BorderCarrinhoVazio.Visibility = temItens
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+
+            GridCarrinho.Visibility = temItens
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+
             GridCarrinho.ItemsSource = null;
             GridCarrinho.ItemsSource = _carrinho;
 
             var total = _carrinho.Sum(i => i.ValorTotal);
             TxtTotalCarrinho.Text = total.ToString("C2");
+            TxtQtdItensCarrinho.Text = $"{_carrinho.Sum(i => i.Quantidade)} item(ns)";
+
+            BtnFinalizar.IsEnabled = temItens;
         }
 
-        // ── FINALIZAR VENDA ──────────────────────────────────────────
+       
 
         private async void BtnFinalizar_Click(object sender, RoutedEventArgs e)
         {
             if (!_carrinho.Any())
-            {
-                MessageBox.Show("Adicione ao menos um produto ao carrinho.");
                 return;
-            }
+
+            var total = _carrinho.Sum(i => i.ValorTotal);
+            var totalItens = _carrinho.Sum(i => i.Quantidade);
 
             var confirmar = MessageBox.Show(
-                $"Confirmar venda de {_carrinho.Count} item(ns) totalizando {_carrinho.Sum(i => i.ValorTotal):C2}?",
+                $"Confirmar venda de {totalItens} item(ns) totalizando {total:C2}?",
                 "Confirmar venda",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
@@ -157,13 +184,13 @@ namespace EstoqueLoja.WPF.Views
 
                 if (venda == null)
                 {
-                    MessageBox.Show("Erro ao finalizar venda.");
+                    MessageBox.Show("Erro ao finalizar venda.",
+                        "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
                 _carrinho.Clear();
                 AtualizarCarrinho();
-                await CarregarHistorico();
 
                 var gerarRecibo = MessageBox.Show(
                     $"Venda Nº {venda.Id} finalizada com sucesso!\n\nDeseja gerar o recibo em PDF?",
@@ -176,83 +203,14 @@ namespace EstoqueLoja.WPF.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao finalizar venda:\n{ex.Message}");
+                MessageBox.Show($"Erro ao finalizar venda:\n{ex.Message}",
+                    "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
-                BtnFinalizar.IsEnabled = true;
-                BtnFinalizar.Content = "Finalizar Venda";
+                BtnFinalizar.IsEnabled = _carrinho.Any();
+                BtnFinalizar.Content = "✔  Finalizar Venda";
             }
-        }
-
-        // ── HISTÓRICO ────────────────────────────────────────────────
-
-        private async Task CarregarHistorico()
-        {
-            try
-            {
-                var vendas = await _vendaApi.ListarAsync();
-
-                _historico = vendas.Select(v => new VendaHistoricoViewModel
-                {
-                    Id = v.Id,
-                    Data = v.Data,
-                    ValorTotal = v.ValorTotal,
-                    TotalItens = v.Itens.Sum(i => i.Quantidade),
-                    Itens = v.Itens
-                }).ToList();
-
-                AplicarFiltroHistorico();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Erro ao carregar histórico:\n{ex.Message}");
-            }
-        }
-
-        private async void BtnAtualizarHistorico_Click(object sender, RoutedEventArgs e)
-        {
-            await CarregarHistorico();
-        }
-
-        private void TxtBuscaHistorico_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            AplicarFiltroHistorico();
-        }
-
-        private void AplicarFiltroHistorico()
-        {
-            if (GridHistorico == null) return;
-
-            var termo = TxtBuscaHistorico?.Text?.Trim() ?? string.Empty;
-
-            var resultado = _historico.AsEnumerable();
-
-            if (!string.IsNullOrWhiteSpace(termo))
-            {
-                resultado = resultado.Where(v =>
-                    v.Id.ToString().Contains(termo) ||
-                    v.Itens.Any(i => i.NomeProduto
-                        .Contains(termo, StringComparison.OrdinalIgnoreCase)));
-            }
-
-            GridHistorico.ItemsSource = resultado.ToList();
-        }
-
-        private void GridHistorico_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (GridHistorico.SelectedItem is not VendaHistoricoViewModel vm) return;
-
-            var venda = new VendaResponseDto
-            {
-                Id = vm.Id,
-                Data = vm.Data,
-                ValorTotal = vm.ValorTotal,
-                Itens = vm.Itens
-            };
-
-            ReciboService.SalvarComDialogo(venda);
         }
     }
-
 }

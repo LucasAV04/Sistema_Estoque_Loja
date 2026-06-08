@@ -8,5 +8,6 @@ namespace Infrastructure.Repositories.Interfaces
         void InserirItem(VendaItem item);
         Venda? BuscarPorId(int id);
         IEnumerable<Venda> ListarTodos();
+        void Deletar(int id);
     }
 }

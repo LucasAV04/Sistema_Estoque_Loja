@@ -57,5 +57,20 @@ namespace API.Controllers
                 return NotFound(new { mensagem = ex.Message });
             }
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id:int}/Deletar")]
+        public IActionResult Deletar(int id)
+        {
+            try
+            {
+                _vendaService.Deletar(id);
+                return Ok(new { mensagem = "Venda excluída com sucesso." });
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(new { mensagem = ex.Message });
+            }
+        }
     }
 }

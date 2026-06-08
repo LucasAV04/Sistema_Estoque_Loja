@@ -101,5 +101,14 @@ namespace Infrastructure.Repositories.MySql
 
             return vendas;
         }
+
+        public void Deletar(int id)
+        {
+            using var connection = _connectionFactory.Create();
+
+           
+            connection.Execute("DELETE FROM venda_item WHERE venda_id = @id", new { id });
+            connection.Execute("DELETE FROM venda WHERE id = @id", new { id });
+        }
     }
 }

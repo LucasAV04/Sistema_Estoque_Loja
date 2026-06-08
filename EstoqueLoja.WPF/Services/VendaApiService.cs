@@ -45,5 +45,11 @@ namespace EstoqueLoja.WPF.Services
                 .GetFromJsonAsync<List<VendaResponseDto>>("api/Vendas/Listar");
             return resultado ?? new();
         }
+
+        public async Task<bool> DeletarAsync(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"api/Vendas/{id}/Deletar");
+            return response.IsSuccessStatusCode;
+        }
     }
 }

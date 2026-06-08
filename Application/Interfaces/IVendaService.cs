@@ -7,5 +7,6 @@ namespace Application.Interfaces
         VendaResponseDto FinalizarVenda(FinalizarVendaDto dto);
         IEnumerable<VendaResponseDto> ListarTodos();
         VendaResponseDto BuscarPorId(int id);
+        void Deletar(int id);
     }
 }

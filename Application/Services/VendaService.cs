@@ -132,5 +132,14 @@ namespace Application.Services
                 }).ToList()
             };
         }
+
+        public void Deletar(int id)
+        {
+            var venda = _vendaRepository.BuscarPorId(id);
+            if (venda == null)
+                throw new ArgumentException("Venda não encontrada.");
+
+            _vendaRepository.Deletar(id);
+        }
     }
 }
