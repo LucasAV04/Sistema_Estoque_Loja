@@ -101,7 +101,8 @@ namespace EstoqueLoja.WPF.Views
                     ValorTotal = vm.ValorTotal,
                     Itens = vm.Itens
                 };
-                ReciboService.SalvarComDialogo(venda);
+                var janela = new ReciboClienteWindow(venda) { Owner = this };
+                janela.ShowDialog();
             }
         }
 

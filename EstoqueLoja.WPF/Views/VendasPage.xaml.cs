@@ -199,7 +199,13 @@ namespace EstoqueLoja.WPF.Views
                     MessageBoxImage.Information);
 
                 if (gerarRecibo == MessageBoxResult.Yes)
-                    ReciboService.SalvarComDialogo(venda);
+                {
+                    var janela = new ReciboClienteWindow(venda)
+                    {
+                        Owner = Window.GetWindow(this)
+                    };
+                    janela.ShowDialog();
+                }
             }
             catch (Exception ex)
             {

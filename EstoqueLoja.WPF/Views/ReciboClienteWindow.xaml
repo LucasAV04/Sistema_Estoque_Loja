@@ -1,0 +1,316 @@
+<Window x:Class="EstoqueLoja.WPF.Views.ReciboClienteWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Dados do Recibo — Loja Diamante"
+        Height="660" Width="540"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#F3F4F6"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#1A5276"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,12,0,6"/>
+        </Style>
+
+        <Style x:Key="Label" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="#4B5563"/>
+            <Setter Property="Margin" Value="0,0,0,3"/>
+        </Style>
+
+        <Style x:Key="Input" TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="5">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="#1A5276"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryBtn" TargetType="Button">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#1A5276"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="b" Background="{TemplateBinding Background}" CornerRadius="7">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="b" Property="Background" Value="#154360"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecBtn" TargetType="Button">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="b"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1" CornerRadius="7">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="b" Property="Background" Value="#F3F4F6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- CABEÇALHO AZUL -->
+        <Border Grid.Row="0" Background="#1A5276" Padding="20,14">
+            <StackPanel>
+                <TextBlock Text="LOJA DIAMANTE"
+                           FontSize="20" FontWeight="Bold"
+                           Foreground="White"/>
+                <TextBlock Text="Preencha os dados do cliente para gerar o recibo"
+                           FontSize="11" Foreground="#AED6F1"
+                           Margin="0,3,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- FORMULÁRIO -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20,0">
+            <StackPanel Margin="0,4,0,16">
+
+                <!-- DADOS DO CLIENTE -->
+                <TextBlock Text="DADOS DO CLIENTE" Style="{StaticResource SectionTitle}"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="160"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Nome do Cliente" Style="{StaticResource Label}"/>
+                        <TextBox x:Name="TxtNome" Style="{StaticResource Input}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="CPF / CNPJ" Style="{StaticResource Label}"/>
+                        <TextBox x:Name="TxtCpf" Style="{StaticResource Input}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="130"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Telefone" Style="{StaticResource Label}"/>
+                        <TextBox x:Name="TxtTelefone" Style="{StaticResource Input}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Vendedor" Style="{StaticResource Label}"/>
+                        <TextBox x:Name="TxtVendedor" Style="{StaticResource Input}"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- ENDEREÇO -->
+                <TextBlock Text="ENDEREÇO" Style="{StaticResource SectionTitle}"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="90"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Rua" Style="{StaticResource Label}"/>
+                        <TextBox x:Name="TxtRua" Style="{StaticResource Input}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Número" Style="{StaticResource Label}"/>
+                        <TextBox x:Name="TxtNumero" Style="{StaticResource Input}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="90"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Bairro" Style="{StaticResource Label}"/>
+                        <TextBox x:Name="TxtBairro" Style="{StaticResource Input}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Cidade" Style="{StaticResource Label}"/>
+                        <TextBox x:Name="TxtCidade" Style="{StaticResource Input}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="4">
+                        <TextBlock Text="UF" Style="{StaticResource Label}"/>
+                        <TextBox x:Name="TxtEstado" Style="{StaticResource Input}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="6">
+                        <TextBlock Text="CEP" Style="{StaticResource Label}"/>
+                        <TextBox x:Name="TxtCep" Style="{StaticResource Input}"/>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Margin="0,8,0,0">
+                    <TextBlock Text="Ponto de Referência" Style="{StaticResource Label}"/>
+                    <TextBox x:Name="TxtReferencia" Style="{StaticResource Input}"/>
+                </StackPanel>
+
+                <!-- PAGAMENTO -->
+                <TextBlock Text="PAGAMENTO" Style="{StaticResource SectionTitle}"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="140"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Forma de Pagamento" Style="{StaticResource Label}"/>
+                        <ComboBox x:Name="CmbPagamento"
+                                  Height="32"
+                                  FontSize="12"
+                                  SelectedIndex="0">
+                            <ComboBoxItem Content="À Vista"/>
+                            <ComboBoxItem Content="Cartão"/>
+                            <ComboBoxItem Content="Boleto"/>
+                            <ComboBoxItem Content="Pix"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Desconto (R$)" Style="{StaticResource Label}"/>
+                        <TextBox x:Name="TxtDesconto"
+                                 Style="{StaticResource Input}"
+                                 Text="0,00"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="4">
+                        <TextBlock Text="Entrada (R$)" Style="{StaticResource Label}"/>
+                        <TextBox x:Name="TxtEntrada"
+                                 Style="{StaticResource Input}"
+                                 Text="0,00"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- OBSERVAÇÕES -->
+                <TextBlock Text="OBSERVAÇÕES" Style="{StaticResource SectionTitle}"/>
+
+                <TextBox x:Name="TxtObservacoes"
+                         Height="64"
+                         Padding="8,6"
+                         FontSize="12"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         BorderBrush="#D1D5DB"
+                         Background="White"
+                         VerticalScrollBarVisibility="Auto">
+                    <TextBox.Template>
+                        <ControlTemplate TargetType="TextBox">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="1" CornerRadius="5">
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                              Margin="{TemplateBinding Padding}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </TextBox.Template>
+                </TextBox>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- RODAPÉ COM BOTÕES -->
+        <Border Grid.Row="2"
+                Background="White"
+                BorderBrush="#E5E7EB"
+                BorderThickness="0,1,0,0"
+                Padding="20,14">
+            <Grid>
+                <Button Content="Cancelar"
+                        Style="{StaticResource SecBtn}"
+                        Width="110"
+                        HorizontalAlignment="Left"
+                        Click="BtnCancelar_Click"/>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Content="🖨  Imprimir"
+                            Style="{StaticResource SecBtn}"
+                            Width="120"
+                            Margin="0,0,10,0"
+                            Click="BtnImprimir_Click"/>
+                    <Button Content="💾  Salvar PDF"
+                            Style="{StaticResource PrimaryBtn}"
+                            Width="130"
+                            Click="BtnSalvarPdf_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
