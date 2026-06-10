@@ -119,6 +119,9 @@ builder.Services.AddScoped<IMovimentacaoEstoqueService, MovimentacaoEstoqueServi
 builder.Services.AddScoped<IVendaRepository, VendaMySqlRepository>();
 builder.Services.AddScoped<IVendaService, VendaService>();
 
+builder.Services.AddScoped<INotaFiscalRepository, NotaFiscalMySqlRepository>();
+builder.Services.AddScoped<INotaFiscalService, NotaFiscalService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

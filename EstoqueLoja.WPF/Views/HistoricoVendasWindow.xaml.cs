@@ -14,7 +14,7 @@ namespace EstoqueLoja.WPF.Views
         {
             InitializeComponent();
 
-            // Exibe coluna Excluir apenas para Admin
+           
             if (SessaoUsuario.IsAdmin)
                 ColExcluir.Visibility = Visibility.Visible;
 

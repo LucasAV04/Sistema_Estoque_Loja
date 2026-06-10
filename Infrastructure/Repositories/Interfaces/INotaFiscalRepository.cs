@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.Repositories.Interfaces
+﻿using Domain;
+
+namespace Infrastructure.Repositories.Interfaces
 {
     public interface INotaFiscalRepository
     {

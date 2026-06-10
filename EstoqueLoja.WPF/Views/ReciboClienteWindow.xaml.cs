@@ -60,7 +60,7 @@ namespace EstoqueLoja.WPF.Views
             var cliente = ColetarDados();
             var bytes = ReciboService.Gerar(_venda, cliente);
 
-            // Salva em temp e abre com o leitor padrão (que permite imprimir)
+            
             var temp = Path.Combine(Path.GetTempPath(),
                 $"Recibo_Venda_{_venda.Id:D6}.pdf");
 
