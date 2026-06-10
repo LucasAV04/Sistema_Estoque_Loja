@@ -72,7 +72,7 @@
                         Margin="0,0,0,10"
                         Click="BtnVenda_Click"/>
 
-                <Button Content="Entrada / Saida"
+                <Button Content="Entrada"
                         Height="40"
                         Margin="0,0,0,10"
                         Click="BtnSaida_Click"/>
