@@ -143,6 +143,21 @@ namespace EstoqueLoja.WPF.Views
                     "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void BtnEmitirNf_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button btn || btn.Tag is not VendaHistoricoViewModel vm) return;
+
+            var venda = new VendaResponseDto
+            {
+                Id = vm.Id,
+                Data = vm.Data,
+                ValorTotal = vm.ValorTotal,
+                Itens = vm.Itens
+            };
+
+            new NotaFiscalWindow(venda) { Owner = this }.ShowDialog();
+        }
     }
 
     public class VendaHistoricoViewModel
