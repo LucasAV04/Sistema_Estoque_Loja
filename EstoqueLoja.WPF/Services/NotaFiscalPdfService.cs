@@ -36,7 +36,7 @@ namespace EstoqueLoja.WPF.Services
                         col.Item().Border(0.75f).BorderColor(Cinza).Padding(6).Row(r =>
                         {
                             r.RelativeItem(3).Text(
-                                $"RECEBEMOS DE {nf.NomeCliente.ToUpper()} OS PRODUTOS / SERVIÇOS " +
+                                $"RECEBEMOS DE MARIA THEREZINHA GOIS DE VASCONCELOS OS PRODUTOS / SERVIÇOS " +
                                 $"CONSTANTES DA NOTA FISCAL INDICADO AO LADO\n" +
                                 $"EMISSÃO: {nf.DataEmissao:dd/MM/yyyy}  –  " +
                                 $"DEST./REM.: {nf.NomeCliente}  –  " +
@@ -374,77 +374,11 @@ namespace EstoqueLoja.WPF.Services
                         for (int i = 0; i < Math.Max(0, 4 - venda.Itens.Count); i++)
                             col.Item().Border(0.5f).BorderColor("#E0E0E0").Height(18);
 
-                        col.Item().Height(4);
+                      
 
-                        // ── FORMA DE PAGAMENTO + TOTAIS ─────────────────
-                        col.Item().Row(r =>
-                        {
-                            r.RelativeItem().Border(0.75f).BorderColor(Cinza).Column(pag =>
-                            {
-                                pag.Item().Background(Azul).Padding(5).PaddingHorizontal(8)
-                                    .Text("FORMA DE PAGAMENTO")
-                                    .FontSize(8).Bold().FontColor(Colors.White);
+                        
 
-                                var formas = new[] { "À Vista", "Cartão", "Boleto", "Pix" };
-                                foreach (var f in formas)
-                                {
-                                    var sel = nf.FormaPagamento.Equals(f,
-                                        StringComparison.OrdinalIgnoreCase);
-                                    pag.Item().Padding(5).Row(pr =>
-                                    {
-                                        pr.ConstantItem(14).Border(0.75f).BorderColor(Cinza)
-                                          .Background(sel ? Azul : Colors.White)
-                                          .Height(12).AlignCenter().AlignMiddle()
-                                          .Text(sel ? "✓" : " ").FontSize(8)
-                                          .FontColor(sel ? Colors.White : Colors.White);
-                                        pr.ConstantItem(6);
-                                        pr.AutoItem().AlignMiddle()
-                                          .Text(f).FontSize(9);
-                                    });
-                                }
-
-                                pag.Item().Padding(5).Column(c =>
-                                {
-                                    c.Item().Text("VENDEDOR").FontSize(7).FontColor(CinzaTx);
-                                    c.Item().BorderBottom(0.5f).BorderColor(Cinza).PaddingBottom(3)
-                                        .Text(nf.Vendedor).FontSize(9);
-                                });
-                            });
-
-                            r.ConstantItem(8);
-
-                            r.RelativeItem().Border(0.75f).BorderColor(Cinza).Column(tot =>
-                            {
-                                tot.Item().Background(Azul).Padding(5).PaddingHorizontal(8)
-                                    .Text("RESUMO DOS VALORES")
-                                    .FontSize(8).Bold().FontColor(Colors.White);
-
-                                void Linha(ColumnDescriptor c, string label, string val,
-                                    bool bold = false, bool destaque = false)
-                                {
-                                    c.Item().Padding(4).Row(r2 =>
-                                    {
-                                        r2.RelativeItem().Text(label).FontSize(9)
-                                            .FontColor(destaque ? Azul : Colors.Black);
-                                        r2.AutoItem().Text(val).FontSize(9)
-                                            .FontColor(destaque ? Azul : Colors.Black);
-                                    });
-                                    c.Item().LineHorizontal(0.3f).LineColor("#E0E0E0");
-                                }
-
-                                tot.Item().Padding(4).Column(c =>
-                                {
-                                    Linha(c, "Subtotal:", $"R$ {subtotal:N2}");
-                                    Linha(c, "Desconto:", nf.Desconto > 0
-                                        ? $"- R$ {nf.Desconto:N2}" : "—");
-                                    Linha(c, "Frete:", "—");
-                                    Linha(c, "TOTAL DA NOTA:", $"R$ {totalFinal:N2}",
-                                        bold: true, destaque: true);
-                                });
-                            });
-                        });
-
-                        col.Item().Height(6);
+                       
 
                         // ── DADOS ADICIONAIS ────────────────────────────
                         col.Item().Border(0.75f).BorderColor(Cinza).Column(add =>
@@ -463,39 +397,6 @@ namespace EstoqueLoja.WPF.Services
                                     : nf.Observacoes;
                                 c.Item().Text(obs).FontSize(9);
                             });
-                        });
-
-                        col.Item().Height(10);
-
-                        // ── ASSINATURAS ─────────────────────────────────
-                        col.Item().Row(r =>
-                        {
-                            r.RelativeItem().Column(c =>
-                            {
-                                c.Item().BorderBottom(0.75f).BorderColor("#333").Height(28);
-                                c.Item().AlignCenter().PaddingTop(4)
-                                    .Text("Assinatura do Destinatário").FontSize(8).FontColor(CinzaTx);
-                            });
-                            r.ConstantItem(30);
-                            r.RelativeItem().Column(c =>
-                            {
-                                c.Item().BorderBottom(0.75f).BorderColor("#333").Height(28);
-                                c.Item().AlignCenter().PaddingTop(4)
-                                    .Text("Assinatura do Emitente / Vendedor").FontSize(8).FontColor(CinzaTx);
-                            });
-                        });
-
-                        col.Item().Height(10);
-
-                        // ── RODAPÉ ──────────────────────────────────────
-                        col.Item().Background(Azul).Padding(6).AlignCenter().Column(f =>
-                        {
-                            f.Item().AlignCenter()
-                                .Text("LOJA DIAMANTE  |  Rua Laranjeiras, 189 – Centro  |  Tel.: (79) 3214-6229")
-                                .FontSize(8).FontColor(Colors.White);
-                            f.Item().AlignCenter()
-                                .Text("E-mail: jaugustovasconcelos@uol.com.br  |  Aracaju – SE")
-                                .FontSize(8).FontColor("#AED6F1");
                         });
                     });
                 });
