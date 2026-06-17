@@ -4,7 +4,7 @@ using EstoqueLoja.WPF.Services;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace EstoqueLoja.WPF.Views
 {
@@ -155,6 +155,24 @@ namespace EstoqueLoja.WPF.Views
                     MessageBox.Show("Erro ao atualizar produto.");
                 }
             }
+        }
+
+        private async void BtnNovoProduto_Click(object sender, RoutedEventArgs e)
+        {
+            if (!SessaoUsuario.IsAdmin)
+            {
+                MessageBox.Show("Apenas administradores podem cadastrar produtos.",
+                    "Acesso negado", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var janela = new ProdutoCadastrarWindow
+            {
+                Owner = Window.GetWindow(this)
+            };
+
+            if (janela.ShowDialog() == true)
+                await BuscarProdutos();
         }
     }
 }

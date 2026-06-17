@@ -48,5 +48,11 @@ namespace EstoqueLoja.WPF.Services
 
             return produtos ?? new List<ProdutoResponseDto>();
         }
+
+        public async Task<bool> CriarAsync(ProdutoCreateDto dto)
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/Produtos/Adicionar", dto);
+            return response.IsSuccessStatusCode;
+        }
     }
 }
