@@ -49,21 +49,19 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin,User")]
         [HttpPost("Registrar")]
+        [Authorize(Roles = "Admin,User")]
+        [HttpPost("Registrar")]
         public IActionResult Registrar([FromBody] MovimentacaoEstoqueDto dto)
         {
             try
             {
+                dto.Usuario = User.Identity?.Name ?? "Sistema";
+
                 _movimentacaoService.Registrar(dto);
                 return Created(string.Empty, new { mensagem = "Movimentação registrada com sucesso." });
             }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { mensagem = ex.Message });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { mensagem = ex.Message });
-            }
+            catch (InvalidOperationException ex) { return BadRequest(new { mensagem = ex.Message }); }
+            catch (ArgumentException ex) { return BadRequest(new { mensagem = ex.Message }); }
         }
     }
 }

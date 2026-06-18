@@ -7,5 +7,6 @@
         public int Quantidade { get; set; }
         public string Origem { get; set; }
         public string? Observacao { get; set; }
+        public string Usuario { get; set; } = string.Empty;
     }
 }

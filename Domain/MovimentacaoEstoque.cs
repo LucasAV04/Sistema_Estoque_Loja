@@ -9,6 +9,7 @@
         public string Origem { get; set; } = string.Empty;
         public string? Observacao { get; set; }
         public DateTime Created_At { get; set; }
+        public string Usuario { get; set; } = string.Empty;
 
         public enum TipoMovimentacao 
         {

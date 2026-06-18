@@ -38,7 +38,7 @@ namespace EstoqueLoja.WPF.Views
         }
         private void BtnHistorico_Click(object sender, RoutedEventArgs e)
         {
-            FramePrincipal.Navigate(new ProdutosPage());
+            TrocarConteudo(new HistoricoPage()); 
         }
 
         private void BtnSair_Click(object sender, RoutedEventArgs e)

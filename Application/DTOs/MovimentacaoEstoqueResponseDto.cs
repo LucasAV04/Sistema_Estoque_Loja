@@ -10,5 +10,6 @@ namespace Application.DTOs
         public string Origem { get; set; }
         public string? Observacao { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string Usuario { get; set; } = string.Empty;
     }
 }
