@@ -4,9 +4,10 @@ using System.Windows;
 
 namespace EstoqueLoja.WPF.Views
 {
-    public partial class ProdutoEditarWindow:Window
+    public partial class ProdutoEditarWindow : Window
     {
         public ProdutoResponseDto ProdutoEditado { get; private set; }
+        public bool ProdutoExcluido { get; private set; } = false;
 
         public ProdutoEditarWindow(ProdutoResponseDto produto)
         {
@@ -70,6 +71,22 @@ namespace EstoqueLoja.WPF.Views
             ProdutoEditado.Valor_Compra = valorCompra;
             ProdutoEditado.Valor_Venda = valorVenda;
 
+            DialogResult = true;
+            Close();
+        }
+
+        private void BtnExcluir_Click(object sender, RoutedEventArgs e)
+        {
+            var confirmar = MessageBox.Show(
+                $"Tem certeza que deseja excluir o produto '{ProdutoEditado.Nome}' (Ref: {ProdutoEditado.Ref})?\n\n" +
+                "Esta ação não poderá ser desfeita.",
+                "Confirmar exclusão",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (confirmar != MessageBoxResult.Yes) return;
+
+            ProdutoExcluido = true;
             DialogResult = true;
             Close();
         }

@@ -123,14 +123,39 @@ namespace EstoqueLoja.WPF.Views
 
             if (resultado == true)
             {
-                var confirmar = MessageBox.Show(
+                if (janela.ProdutoExcluido)
+                {
+                    try
+                    {
+                        var sucesso = await _produtoApiService.DeletarAsync(produtoSelecionado.Id);
+
+                        if (sucesso)
+                        {
+                            MessageBox.Show("Produto excluído com sucesso.",
+                                "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            await BuscarProdutos();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Erro ao excluir produto. Verifique se ele possui movimentações vinculadas.",
+                                "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Erro ao excluir:\n{ex.Message}",
+                            "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+
+                    return;
+                }
+                var confirmarEdicao = MessageBox.Show(
                     "Deseja confirmar a alteração deste produto?",
                     "Confirmar alteração",
                     MessageBoxButton.YesNo,
-                    MessageBoxImage.Question
-                );
+                    MessageBoxImage.Question);
 
-                if (confirmar != MessageBoxResult.Yes)
+                if (confirmarEdicao != MessageBoxResult.Yes)
                     return;
 
                 var dto = new ProdutoCreateDto
@@ -143,9 +168,9 @@ namespace EstoqueLoja.WPF.Views
                     Valor_Venda = janela.ProdutoEditado.Valor_Venda
                 };
 
-                var sucesso = await _produtoApiService.AtualizarAsync(janela.ProdutoEditado.Id, dto);
+                var sucessoEdicao = await _produtoApiService.AtualizarAsync(janela.ProdutoEditado.Id, dto);
 
-                if (sucesso )
+                if (sucessoEdicao)
                 {
                     MessageBox.Show("Produto atualizado com sucesso.");
                     await BuscarProdutos();
@@ -155,6 +180,7 @@ namespace EstoqueLoja.WPF.Views
                     MessageBox.Show("Erro ao atualizar produto.");
                 }
             }
+        }
         }
 
         private async void BtnNovoProduto_Click(object sender, RoutedEventArgs e)

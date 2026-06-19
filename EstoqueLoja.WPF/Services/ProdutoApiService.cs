@@ -54,5 +54,11 @@ namespace EstoqueLoja.WPF.Services
             var response = await _httpClient.PostAsJsonAsync("api/Produtos/Adicionar", dto);
             return response.IsSuccessStatusCode;
         }
+
+        public async Task<bool> DeletarAsync(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"api/Produtos/{id}/Deletar");
+            return response.IsSuccessStatusCode;
+        }
     }
 }

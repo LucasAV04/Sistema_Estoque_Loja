@@ -281,7 +281,7 @@
                                                    FontWeight="SemiBold"
                                                    Foreground="#065F46"
                                                    VerticalAlignment="Center">
-											<Run Text="{Binding Valor_Venda, StringFormat=C2}"/>
+											<Run Text="{Binding Valor_Venda, StringFormat='R$ {0:N2}'}"/>
 										</TextBlock>
 									</Grid>
 								</DataTemplate>

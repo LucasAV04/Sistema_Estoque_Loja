@@ -8,61 +8,82 @@
         ResizeMode="NoResize"
         Background="White">
 
-    <Grid Margin="25">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+	<Grid Margin="25">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
 
-        <TextBlock Text="Editar Produto"
+		<TextBlock Text="Editar Produto"
                    FontSize="24"
                    FontWeight="Bold"
                    Margin="0,0,0,20"/>
-        
-        <ScrollViewer Grid.Row="1"
+
+		<ScrollViewer Grid.Row="1"
               VerticalScrollBarVisibility="Auto">
-            <StackPanel>
+			<StackPanel>
 
-                <TextBlock Text="Referência"/>
-            <TextBox x:Name="TxtRef" Height="30" Margin="0,0,0,10"/>
+				<TextBlock Text="Referência"/>
+				<TextBox x:Name="TxtRef" Height="30" Margin="0,0,0,10"/>
 
-            <TextBlock Text="Nome"/>
-            <TextBox x:Name="TxtNome" Height="30" Margin="0,0,0,10"/>
+				<TextBlock Text="Nome"/>
+				<TextBox x:Name="TxtNome" Height="30" Margin="0,0,0,10"/>
 
-            <TextBlock Text="Descrição"/>
-            <TextBox x:Name="TxtDescricao" Height="60" Margin="0,0,0,10"
-                     AcceptsReturn="True"
-                     TextWrapping="Wrap"/>
+				<TextBlock Text="Descrição"/>
+				<TextBox x:Name="TxtDescricao" Height="60" Margin="0,0,0,10"
+						 AcceptsReturn="True"
+						 TextWrapping="Wrap"/>
 
-            <TextBlock Text="Tipo"/>
-            <TextBox x:Name="TxtTipo" Height="30" Margin="0,0,0,10"/>
+				<TextBlock Text="Tipo"/>
+				<TextBox x:Name="TxtTipo" Height="30" Margin="0,0,0,10"/>
 
-            <TextBlock Text="Valor Compra"/>
-            <TextBox x:Name="TxtValorCompra" Height="30" Margin="0,0,0,10"/>
+				<TextBlock Text="Valor Compra"/>
+				<TextBox x:Name="TxtValorCompra" Height="30" Margin="0,0,0,10"/>
 
-            <TextBlock Text="Valor Venda"/>
-            <TextBox x:Name="TxtValorVenda" Height="30" Margin="0,0,0,10"/>
+				<TextBlock Text="Valor Venda"/>
+				<TextBox x:Name="TxtValorVenda" Height="30" Margin="0,0,0,10"/>
 
-        </StackPanel>
+			</StackPanel>
 
-        </ScrollViewer>
-    
-        <StackPanel Grid.Row="2"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Margin="0,20,0,0">
+		</ScrollViewer>
 
-            <Button Content="Cancelar"
-                    Width="90"
-                    Height="32"
-                    Margin="0,0,10,0"
-                    Click="BtnCancelar_Click"/>
+		<Grid Grid.Row="2" Margin="0,20,0,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
 
-            <Button Content="Salvar"
-                    Width="90"
-                    Height="32"
-                    Click="BtnSalvar_Click"/>
-        </StackPanel>
-    </Grid>
+			<!-- Botão Excluir -->
+			<Button Grid.Column="0"
+					Content="Excluir Produto"
+					Width="130"
+					Height="32"
+					HorizontalAlignment="Left"
+					Background="White"
+					Foreground="#C0392B"
+					BorderBrush="#FECACA"
+					BorderThickness="1"
+					Cursor="Hand"
+					Click="BtnExcluir_Click">
+			</Button>
+
+			<!-- Botões da direita -->
+			<StackPanel Grid.Column="1"
+						Orientation="Horizontal"
+						HorizontalAlignment="Right">
+
+				<Button Content="Cancelar"
+						Width="90"
+						Height="32"
+						Margin="0,0,10,0"
+						Click="BtnCancelar_Click"/>
+
+				<Button Content="Salvar"
+						Width="90"
+						Height="32"
+						Click="BtnSalvar_Click"/>
+			</StackPanel>
+		</Grid>
+	</Grid>
 </Window>
