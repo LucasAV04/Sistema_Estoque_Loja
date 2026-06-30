@@ -181,7 +181,7 @@ namespace EstoqueLoja.WPF.Views
                 }
             }
         }
-        }
+        
 
         private async void BtnNovoProduto_Click(object sender, RoutedEventArgs e)
         {

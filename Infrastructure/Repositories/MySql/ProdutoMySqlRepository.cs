@@ -137,9 +137,25 @@ namespace Infrastructure.Repositories.MySql
         {
             using var connection = _connectionFactory.Create();
 
-            var sql = "DELETE FROM produto WHERE id = @Id;";
+        
+            connection.Execute(
+                "DELETE FROM venda_item WHERE produto_id = @Id",
+                new { produto.Id });
 
-            connection.Execute(sql, new { produto.Id });
+           
+            connection.Execute(
+                "DELETE FROM movimentacao_estoque WHERE produto_id = @Id",
+                new { produto.Id });
+
+          
+            connection.Execute(
+                "DELETE FROM estoque WHERE produto_id = @Id",
+                new { produto.Id });
+
+          
+            connection.Execute(
+                "DELETE FROM produto WHERE id = @Id",
+                new { produto.Id });
         }
     }
 }

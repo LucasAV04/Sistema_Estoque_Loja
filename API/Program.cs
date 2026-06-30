@@ -10,6 +10,10 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseUrls(
+    "http://0.0.0.0:5160",
+    "https://0.0.0.0:7267"
+);
 
 builder.Services.AddControllers();
 

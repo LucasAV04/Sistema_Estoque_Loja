@@ -80,5 +80,20 @@ namespace EstoqueLoja.WPF.Views
             TxtValorTotalEstoque.Text =
                 $"Valor total em estoque: {lista.Sum(x => x.ValorTotal):C2}";
         }
+
+        private void BtnGerarRelatorio_Click(object sender, RoutedEventArgs e)
+        {
+            if (_estoque == null || !_estoque.Any())
+            {
+                MessageBox.Show("Nenhum dado de estoque para gerar o relatório.",
+                    "Atenção", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var listaAtual = (GridEstoque.ItemsSource as IEnumerable<EstoqueDetalhadoResponseDto>)
+                             ?.ToList() ?? _estoque;
+
+            RelatorioEstoqueService.SalvarComDialogo(listaAtual);
+        }
     }
 }
